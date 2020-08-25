@@ -7,10 +7,10 @@
  */
 
 import React from 'react';
-import { Appbar, Button } from 'react-native-paper';
-import { View, StyleSheet } from 'react-native';
+import {Appbar, Button} from 'react-native-paper';
+import {View, StyleSheet} from 'react-native';
 
-const App: () => React$Node = () => {
+const App: React.FC<void> = () => {
   return (
     <View style={styles.container}>
       <Appbar style={styles.bottom}>
@@ -18,15 +18,24 @@ const App: () => React$Node = () => {
           icon="archive"
           onPress={() => console.log('Pressed archive')}
         />
-        <Appbar.Action icon="mail" onPress={() => console.log('Pressed mail')} />
-        <Appbar.Action icon="label" onPress={() => console.log('Pressed label')} />
+        <Appbar.Action
+          icon="mail"
+          onPress={() => console.log('Pressed mail')}
+        />
+        <Appbar.Action
+          icon="label"
+          onPress={() => console.log('Pressed label')}
+        />
         <Appbar.Action
           icon="delete"
           onPress={() => console.log('Pressed delete')}
         />
       </Appbar>
 
-      <Button icon="camera" mode="contained" onPress={() => console.log('Pressed')}>
+      <Button
+        icon="camera"
+        mode="contained"
+        onPress={() => console.log('Pressed')}>
         Press me
       </Button>
     </View>
@@ -35,7 +44,7 @@ const App: () => React$Node = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   bottom: {
     position: 'absolute',
