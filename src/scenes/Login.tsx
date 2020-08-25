@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, StyleSheet, Linking} from 'react-native';
-import {Title, TextInput, Button, Paragraph} from 'react-native-paper';
+import { View, StyleSheet, Linking } from 'react-native';
+import { Title, TextInput, Button, Paragraph } from 'react-native-paper';
 
 const Login = () => {
   const [username, setUsername] = React.useState('');

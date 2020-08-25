@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Button, Title} from 'react-native-paper';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../navigator';
+import { View, StyleSheet } from 'react-native';
+import { Button, Title } from 'react-native-paper';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../navigator';
 
 type HomeNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -10,7 +10,7 @@ type Props = {
   navigation: HomeNavigationProp;
 };
 
-const Home = ({navigation}: Props) => {
+const Home = ({ navigation }: Props) => {
   return (
     <View style={styles.container}>
       <Title>Hello World!</Title>
