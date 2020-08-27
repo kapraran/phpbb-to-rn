@@ -10,8 +10,8 @@ import { name as appName } from './app.json';
 import { NavigationContainer } from '@react-navigation/native';
 import Stack from './src/navigator';
 
-import Home from './src/scenes/Home';
-import Login from './src/scenes/Login';
+import Home from './src/screens/Home';
+import Login from './src/screens/Login';
 
 const theme = {
   ...DefaultTheme,

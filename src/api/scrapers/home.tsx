@@ -1,32 +1,32 @@
-interface GroupItem {
+export interface GroupItem {
   name: string;
   forums: ForumItem[];
 }
 
-interface ForumItem {
+export interface ForumItem {
   title: string;
   description: string;
-  linkParams: ForumLink;
+  linkParams: ForumLinkParams;
 }
 
-interface ForumLink {
+export interface ForumLinkParams {
   f: number;
 }
 
-const getParams = function (row: Element): ForumLink {
+const getParams = function (row: Element): ForumLinkParams {
   const a = row.querySelector<HTMLAnchorElement>('.forumlink')!;
   const params = new URL(a!.href).searchParams;
 
   return { f: parseInt(params.get('f')!) };
 };
 
-const homeScraper = (document: Document) => {
+export const homeScraper = (document: Document): GroupItem[] => {
   const wrapper = document.querySelector('#contentrow');
   const groups: GroupItem[] = [];
 
-  if (wrapper === null) return { groups };
+  if (wrapper === null) return groups;
 
-  Array.from(wrapper.children).reduce<GroupItem[]>((groups, el) => {
+  return Array.from(wrapper.children).reduce<GroupItem[]>((groups, el) => {
     const { className, children } = el;
 
     switch (className) {
@@ -61,5 +61,3 @@ const homeScraper = (document: Document) => {
     return groups;
   }, groups);
 };
-
-export default homeScraper;
