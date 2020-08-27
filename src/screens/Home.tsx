@@ -6,12 +6,19 @@ import { RootStackParamList } from '../navigator';
 import { ActivityIndicator, List, Colors } from 'react-native-paper';
 import { getIndexForums } from '../api/api';
 import { GroupItem } from '../api/scrapers/home';
+import { FlatList } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type HomeNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 const firstLetterUpper = (str: string) => {
-  return str.split(' ').map(part => part.charAt(0).toUpperCase() + part.substring(1).toLowerCase()).join(' ')
-}
+  return str
+    .split(' ')
+    .map(
+      (part) => part.charAt(0).toUpperCase() + part.substring(1).toLowerCase(),
+    )
+    .join(' ');
+};
 
 type Props = {
   navigation: HomeNavigationProp;
@@ -26,48 +33,64 @@ const Home = ({ navigation }: Props) => {
     });
   });
 
-  return (
-    <View>
+  const renderItem = ({ item }: { item: GroupItem }) => (
+    <List.Section>
+      <List.Subheader>{firstLetterUpper(item.name)}</List.Subheader>
+
+      <List.Item
+        title="Hello Mister World"
+        onPress={() => {
+          console.log('clicked!');
+        }}
+      />
+      <List.Item
+        title="Hello Mister World"
+        onPress={() => {
+          console.log('clicked!');
+        }}
+      />
+      <List.Item
+        title="Hello Mister World"
+        onPress={() => {
+          console.log('clicked!');
+        }}
+      />
+    </List.Section>
+  );
+
+  const renderHeader = () => {
+    return (
       <Appbar.Header>
         {/* <Appbar.BackAction onPress={() => {console.log('back')}} /> */}
-        <Appbar.Content title="Panatha Forum"/>
-        <Appbar.Action icon="magnify" onPress={() => navigation.navigate('Login')} />
-        <Appbar.Action icon="dots-vertical" onPress={() => navigation.navigate('Login')} />
+        <Appbar.Content title="Panatha Forum" />
+        <Appbar.Action
+          icon="magnify"
+          onPress={() => navigation.navigate('Login')}
+        />
+        <Appbar.Action
+          icon="dots-vertical"
+          onPress={() => navigation.navigate('Login')}
+        />
       </Appbar.Header>
+    );
+  };
 
-      <ScrollView style={styles.container}>
-        {forums.map(({ name }) => (
-          <List.Section key={name}>
-            <List.Subheader>{firstLetterUpper(name)}</List.Subheader>
-
-            <List.Item
-              title="Hello Mister World"
-              onPress={() => {
-                console.log('clicked!');
-              }}
-            />
-            <List.Item
-              title="Hello Mister World"
-              onPress={() => {
-                console.log('clicked!');
-              }}
-            />
-            <List.Item
-              title="Hello Mister World"
-              onPress={() => {
-                console.log('clicked!');
-              }}
-            />
-          </List.Section>
-        ))}
-      </ScrollView>
-    </View>
+  return (
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={forums}
+        renderItem={renderItem}
+        ListHeaderComponent={renderHeader}
+        keyExtractor={({ name }) => name}
+        stickyHeaderIndices={[0]}
+      />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   bottom: {
     position: 'absolute',
