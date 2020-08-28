@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import {
-  Button,
-  Title,
-  Appbar,
-  ActivityIndicator,
-  List,
-  Colors,
-} from 'react-native-paper';
+import { StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigator';
 import { getIndexForums } from '../api/api';
@@ -15,17 +7,10 @@ import { GroupItem } from '../api/scrapers/home';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AppHeader from '../components/AppHeader';
+import ForumGroup from '../components/ForumGroup';
+import SpinnerView from '../components/SpinnerView';
 
 type HomeNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
-
-const firstLetterUpper = (str: string) => {
-  return str
-    .split(' ')
-    .map(
-      (part) => part.charAt(0).toUpperCase() + part.substring(1).toLowerCase(),
-    )
-    .join(' ');
-};
 
 type Props = {
   navigation: HomeNavigationProp;
@@ -43,49 +28,32 @@ const Home = ({ navigation }: Props) => {
   });
 
   const renderItem = ({ item }: { item: GroupItem }) => (
-    <List.Section>
-      <List.Subheader>{firstLetterUpper(item.name)}</List.Subheader>
-      {item.forums.map((forum, i) => (
-        <List.Item
-          key={forum.title + i}
-          title={forum.title}
-          description={forum.description}
-          descriptionNumberOfLines={3}
-          left={(props) => <List.Icon {...props} icon="folder" />}
-          onPress={() => {
-            console.log('clicked!');
-          }}
-        />
-      ))}
-    </List.Section>
+    <ForumGroup item={item} />
   );
 
-  const renderHeader = () => {
-    return <AppHeader title="Panatha Forum"></AppHeader>;
-  };
+  const renderHeader = () => <AppHeader title="Panatha Forum" />;
+
+  const renderFooter = () => (forums.length === 0 ? <SpinnerView /> : null);
 
   return (
     <SafeAreaView style={styles.container}>
-      {forums.length < 1 ? (
-        <View style={styles.spinnerContainer}>
-          <ActivityIndicator />
-        </View>
-      ) : (
-        <FlatList
-          data={forums}
-          renderItem={renderItem}
-          ListHeaderComponent={renderHeader}
-          keyExtractor={({ name }) => name}
-          stickyHeaderIndices={[0]}
-        />
-      )}
+      <FlatList
+        data={forums}
+        renderItem={renderItem}
+        ListHeaderComponent={renderHeader}
+        ListFooterComponent={renderFooter}
+        ListFooterComponentStyle={{ flex: 1 }}
+        keyExtractor={({ name }) => name}
+        stickyHeaderIndices={[0]}
+        contentContainerStyle={{ flexGrow: 1 }}
+      />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
   },
   spinnerContainer: {
     flex: 1,
