@@ -1,3 +1,6 @@
+import { URL } from 'react-native-url-polyfill';
+import he from 'he';
+
 export interface GroupItem {
   name: string;
   forums: ForumItem[];
@@ -15,7 +18,7 @@ export interface ForumLinkParams {
 
 const getParams = function (row: Element): ForumLinkParams {
   const a = row.querySelector<HTMLAnchorElement>('.forumlink')!;
-  const params = new URL(a!.href).searchParams;
+  const params = new URL('http://panathagrforum.net' + a!.href).searchParams;
 
   return { f: parseInt(params.get('f')!) };
 };
@@ -42,20 +45,23 @@ export const homeScraper = (document: Document): GroupItem[] => {
       case 'tablebg':
         if (el.querySelector('.forumlink') === null) return groups;
 
-        const forums = Array.from(el.children[0].children).slice(1);
-        const forumItems = Array.from(forums)
-          .filter((forumEl) => forumEl.children.length >= 2)
+        const forums = Array.from(el.querySelectorAll('tr')).slice(1);
+        const forumItems = forums
+          .filter((forumEl, i) => forumEl.children.length >= 2 && i % 2 == 0)
           .map<ForumItem>((forumEl) => {
             const linkParams = getParams(forumEl);
+            const title = forumEl.querySelector('.forumlink')!.innerHTML;
+            const description = forumEl.querySelector('.forumdesc')!.innerHTML;
 
             return {
-              title: forumEl.querySelector('.forumlink')!.innerHTML,
-              description: forumEl.querySelector('.forumdesc')!.innerHTML,
+              title: he.decode(title),
+              description,
               linkParams,
             };
           });
 
         groups[groups.length - 1].forums = forumItems;
+        break;
     }
 
     return groups;
