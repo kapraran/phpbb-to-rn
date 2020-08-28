@@ -4,14 +4,19 @@ import { useNavigation } from '@react-navigation/native';
 
 interface Props {
   title: string;
+  subtitle?: string;
+  showBack?: boolean;
 }
 
-const AppHeader = ({ title }: Props) => {
+const AppHeader = ({ title, subtitle, showBack = false }: Props) => {
   const navigation = useNavigation();
 
   return (
     <Appbar.Header>
-      <Appbar.Content title={title} />
+      {showBack ? (
+        <Appbar.BackAction onPress={() => navigation.goBack()} />
+      ) : null}
+      <Appbar.Content title={title} subtitle={subtitle} />
       <Appbar.Action icon="cog" onPress={() => navigation.navigate('Login')} />
     </Appbar.Header>
   );

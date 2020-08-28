@@ -33,16 +33,15 @@ const Home = ({ navigation }: Props) => {
 
   const renderHeader = () => <AppHeader title="Panatha Forum" />;
 
-  const renderFooter = () => (forums.length === 0 ? <SpinnerView /> : null);
+  const renderEmpty = () => <SpinnerView />;
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={forums}
         renderItem={renderItem}
+        ListEmptyComponent={renderEmpty}
         ListHeaderComponent={renderHeader}
-        ListFooterComponent={renderFooter}
-        ListFooterComponentStyle={{ flex: 1 }}
         keyExtractor={({ name }) => name}
         stickyHeaderIndices={[0]}
         contentContainerStyle={{ flexGrow: 1 }}
@@ -54,18 +53,6 @@ const Home = ({ navigation }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-  },
-  spinnerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  bottom: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    zIndex: 99,
   },
 });
 
