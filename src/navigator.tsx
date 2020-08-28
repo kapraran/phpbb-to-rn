@@ -5,6 +5,6 @@ export type RootStackParamList = {
   Login: undefined;
 };
 
-const Stack = createStackNavigator<RootStackParamList>();
+const stackNavigator = createStackNavigator<RootStackParamList>();
 
-export default Stack;
+export default stackNavigator;

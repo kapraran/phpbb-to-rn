@@ -14,6 +14,7 @@ import { getIndexForums } from '../api/api';
 import { GroupItem } from '../api/scrapers/home';
 import { FlatList } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AppHeader from '../components/AppHeader';
 
 type HomeNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -60,19 +61,7 @@ const Home = ({ navigation }: Props) => {
   );
 
   const renderHeader = () => {
-    return (
-      <Appbar.Header>
-        <Appbar.Content title="Panatha Forum" />
-        <Appbar.Action
-          icon="magnify"
-          onPress={() => navigation.navigate('Login')}
-        />
-        <Appbar.Action
-          icon="dots-vertical"
-          onPress={() => navigation.navigate('Login')}
-        />
-      </Appbar.Header>
-    );
+    return <AppHeader title="Panatha Forum"></AppHeader>;
   };
 
   return (
@@ -101,7 +90,7 @@ const styles = StyleSheet.create({
   spinnerContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   bottom: {
     position: 'absolute',
