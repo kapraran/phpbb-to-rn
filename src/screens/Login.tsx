@@ -1,10 +1,16 @@
 import React from 'react';
 import { View, StyleSheet, Linking } from 'react-native';
 import { Title, TextInput, Button, Paragraph } from 'react-native-paper';
+import { login } from '../api/api';
 
 const Login = () => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+  const onSubmit = () => {
+    console.log(`u:${username} p:${password}`);
+    login(username, password).then(console.log);
+  };
 
   return (
     <View style={styles.container}>
@@ -27,7 +33,7 @@ const Login = () => {
         style={styles.password}
       />
 
-      <Button mode="contained" onPress={() => console.log(username, password)}>
+      <Button mode="contained" onPress={onSubmit}>
         Submit
       </Button>
 

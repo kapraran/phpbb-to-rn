@@ -24,7 +24,11 @@ const ViewForum = ({ navigation, route }: Props) => {
   const renderItem = () => <View />;
 
   const renderHeader = () => (
-    <AppHeader title={route.params.title} subtitle={route.params.groupName} showBack={true} />
+    <AppHeader
+      title={route.params.title}
+      subtitle={route.params.groupName}
+      showBack={true}
+    />
   );
 
   const renderEmpty = () => <SpinnerView />;

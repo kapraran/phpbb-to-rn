@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigator';
 import { getIndexForums } from '../api/api';
 import { GroupItem } from '../api/scrapers/home';
 import { FlatList } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import AppHeader from '../components/AppHeader';
 import ForumGroup from '../components/ForumGroup';
 import SpinnerView from '../components/SpinnerView';
