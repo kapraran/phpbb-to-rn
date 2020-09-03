@@ -17,7 +17,6 @@ const AppHeader = ({ title, subtitle, showBack = false }: Props) => {
         <Appbar.BackAction onPress={() => navigation.goBack()} />
       ) : null}
       <Appbar.Content title={title} subtitle={subtitle} />
-      <Appbar.Action icon="cog" onPress={() => navigation.navigate('Login')} />
     </Appbar.Header>
   );
 };

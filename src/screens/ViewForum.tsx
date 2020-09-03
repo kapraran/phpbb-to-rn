@@ -10,6 +10,7 @@ import { TopicLinkData } from '../api/scrapers/viewforum';
 import { List, Colors } from 'react-native-paper';
 import { firstLetterUpper } from '../utils/utils';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Pagination from '../components/Pagination';
 
 type ViewForumNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -51,6 +52,7 @@ const ViewForum = ({ navigation, route }: Props) => {
           color={item.unread ? Colors.green800 : Colors.grey700}
         />
       )}
+      onPress={() => console.log('Pressed topic link')}
     />
   );
 
@@ -64,6 +66,8 @@ const ViewForum = ({ navigation, route }: Props) => {
 
   const renderEmpty = () => <SpinnerView />;
 
+  const renderFooter = () => topics.length > 0 ? <Pagination current={1} max={2}></Pagination>: null
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -71,6 +75,7 @@ const ViewForum = ({ navigation, route }: Props) => {
         renderItem={renderItem}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}
+        ListFooterComponent={renderFooter}
         keyExtractor={({ title }) => title}
         stickyHeaderIndices={[0]}
         contentContainerStyle={{ flexGrow: 1 }}
