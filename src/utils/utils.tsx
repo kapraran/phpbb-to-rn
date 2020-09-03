@@ -1,3 +1,8 @@
+export const prependBaseUrl = (suffix: string) => {
+  const slash = suffix.charAt(0) === '/' ? '' : '/';
+  return `http://panathagrforum.net${slash}${suffix}`;
+};
+
 export const firstLetterUpper = (str: string) => {
   return str
     .split(' ')

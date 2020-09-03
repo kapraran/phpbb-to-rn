@@ -1,8 +1,18 @@
+import { prependBaseUrl } from '../../utils/utils';
+import { URL } from 'react-native-url-polyfill';
+
+export interface TopicLinkParams {
+  f: number;
+  t: number;
+  start?: number;
+}
+
 export interface TopicLinkData {
   author: string;
   title: string;
   replies: number;
   unread: boolean;
+  params: TopicLinkParams;
 }
 
 export enum TopicRowType {
@@ -11,6 +21,13 @@ export enum TopicRowType {
   GROUP,
   TOPIC,
 }
+
+const getRowParams = function (row: Element): TopicLinkParams {
+  const a = row.querySelector<HTMLAnchorElement>('.topictitle')!;
+  const params = new URL(prependBaseUrl(a!.href)).searchParams;
+
+  return { f: parseInt(params.get('f')!), t: parseInt(params.get('t')!) };
+};
 
 const resolveRowType = (row: HTMLTableRowElement): TopicRowType => {
   const firstChild = row.children[0];
@@ -32,7 +49,7 @@ const getRowAuthor = (row: HTMLTableRowElement): string => {
 
 const isRowUnread = (row: HTMLTableRowElement): boolean => {
   const td = row.children[1];
-  const a = td.children[0];
+  const a = td.querySelector<HTMLAnchorElement>('a')!;
 
   if (a.tagName !== 'A') return false;
 
@@ -60,12 +77,14 @@ export const viewForumScraper = (document: Document) => {
     const title = getRowTitle(row);
     const replies = getRowReplies(row);
     const unread = isRowUnread(row);
+    const params = getRowParams(row);
 
     topics.push({
       author,
       title,
       replies,
       unread,
+      params,
     });
 
     return topics;

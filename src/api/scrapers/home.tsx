@@ -1,5 +1,6 @@
 import { URL } from 'react-native-url-polyfill';
 import he from 'he';
+import { prependBaseUrl } from '../../utils/utils';
 
 export interface GroupItem {
   name: string;
@@ -18,7 +19,7 @@ export interface ForumLinkParams {
 
 const getParams = function (row: Element): ForumLinkParams {
   const a = row.querySelector<HTMLAnchorElement>('.forumlink')!;
-  const params = new URL('http://panathagrforum.net' + a!.href).searchParams;
+  const params = new URL(prependBaseUrl(a!.href)).searchParams;
 
   return { f: parseInt(params.get('f')!) };
 };
