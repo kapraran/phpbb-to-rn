@@ -2,14 +2,20 @@ import React from 'react';
 import { View, StyleSheet, Linking } from 'react-native';
 import { Title, TextInput, Button, Paragraph } from 'react-native-paper';
 import { login } from '../api/api';
+import { useNavigation } from '@react-navigation/native';
 
 const Login = () => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const navigation = useNavigation();
 
   const onSubmit = () => {
     console.log(`u:${username} p:${password}`);
-    login(username, password).then(console.log);
+    login(username, password).then((logged) => {
+      if (logged) {
+        navigation.navigate('Home');
+      }
+    });
   };
 
   return (

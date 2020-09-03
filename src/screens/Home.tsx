@@ -19,12 +19,18 @@ const Home = ({ navigation }: Props) => {
   const [forums, setForums] = useState<GroupItem[]>([]);
 
   useEffect(() => {
-    if (forums.length > 0) return;
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (forums.length > 0) return;
 
-    getIndexForums().then((groups) => {
-      setForums(groups);
+      getIndexForums().then((indexData) => {
+        setForums(indexData.groupItems);
+
+        if (!indexData.isLogged) navigation.navigate('Login');
+      });
     });
-  });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const renderItem = ({ item }: { item: GroupItem }) => (
     <ForumGroup item={item} />

@@ -1,5 +1,6 @@
 import jsdom from 'jsdom-jscore-rn';
 import { homeScraper } from './scrapers/home';
+import { commonScraper } from './scrapers/common';
 
 export const parseHTML = (html: string): Promise<Window> => {
   return new Promise((resolve, reject) => {
@@ -34,16 +35,23 @@ export const login = async (username: string, password: string) => {
     body: formBody,
   });
 
-  console.log(response.headers);
+  const window = await parseHTML(await response.text());
 
-  return await response.text();
+  return commonScraper(window.document).isLogged;
 };
 
 export const getIndexForums = async () => {
-  const resp = await fetch('http://panathagrforum.net/', {
+  const response = await fetch('http://panathagrforum.net/', {
     credentials: 'include',
   });
-  const window = await parseHTML(await resp.text());
+  const window = await parseHTML(await response.text());
+  const document = window.document;
 
-  return homeScraper(window.document);
+  const common = commonScraper(document);
+  const groupItems = homeScraper(document);
+
+  return {
+    ...common,
+    groupItems,
+  };
 };
