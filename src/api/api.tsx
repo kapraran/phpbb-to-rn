@@ -1,6 +1,7 @@
 import jsdom from 'jsdom-jscore-rn';
-import { homeScraper } from './scrapers/home';
+import { homeScraper, ForumLinkParams } from './scrapers/home';
 import { commonScraper } from './scrapers/common';
+import { viewForumScraper } from './scrapers/viewforum';
 
 export const parseHTML = (html: string): Promise<Window> => {
   return new Promise((resolve, reject) => {
@@ -53,5 +54,25 @@ export const getIndexForums = async () => {
   return {
     ...common,
     groupItems,
+  };
+};
+
+export const getViewForumTopics = async (params: ForumLinkParams) => {
+  const response = await fetch(
+    `http://panathagrforum.net/viewforum.php?f=${params.f}`,
+    {
+      credentials: 'include',
+    },
+  );
+
+  const window = await parseHTML(await response.text());
+  const document = window.document;
+
+  const common = commonScraper(document);
+  const topics = viewForumScraper(document);
+
+  return {
+    ...common,
+    topics,
   };
 };

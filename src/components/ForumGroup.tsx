@@ -26,6 +26,7 @@ const ForumGroup = ({ item }: Props) => {
             navigation.navigate('ViewForum', {
               title: forum.title,
               groupName: firstLetterUpper(name),
+              params: forum.linkParams,
             })
           }
         />

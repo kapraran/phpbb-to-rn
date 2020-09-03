@@ -23,9 +23,8 @@ const Home = ({ navigation }: Props) => {
       if (forums.length > 0) return;
 
       getIndexForums().then((indexData) => {
+        if (!indexData.isLogged) return navigation.navigate('Login');
         setForums(indexData.groupItems);
-
-        if (!indexData.isLogged) navigation.navigate('Login');
       });
     });
 
