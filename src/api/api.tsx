@@ -4,7 +4,6 @@ import { viewForumScraper, TopicLinkParams } from './scrapers/viewforum';
 import { prependBaseUrl, parseHTML } from '../utils/utils';
 import { viewTopicScraper } from './scrapers/viewtopic';
 
-
 export const login = async (username: string, password: string) => {
   const data: { [key: string]: string } = {
     username,

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, FlatList, SafeAreaView, View } from 'react-native';
+import { Colors } from 'react-native-paper';
 import AppHeader from '../components/AppHeader';
 import SpinnerView from '../components/SpinnerView';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -71,7 +72,10 @@ const ViewTopic = ({ navigation, route }: Props) => {
           createKey(user.username, content, index)
         }
         stickyHeaderIndices={[0]}
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          backgroundColor: Colors.green100,
+        }}
       />
     </SafeAreaView>
   );

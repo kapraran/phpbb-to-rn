@@ -30,8 +30,10 @@ const PostCard = (props: Props) => (
 const styles = StyleSheet.create({
   container: {
     elevation: 1,
-    marginHorizontal: 8,
-    marginVertical: 4,
+    marginHorizontal: 4,
+    marginVertical: 2,
+    borderRadius: 4,
+    backgroundColor: Colors.white,
   },
   header: {
     flexDirection: 'row',
