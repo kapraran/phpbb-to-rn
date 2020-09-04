@@ -1,18 +1,9 @@
-import jsdom from 'jsdom-jscore-rn';
 import { homeScraper, ForumLinkParams } from './scrapers/home';
 import { commonScraper } from './scrapers/common';
 import { viewForumScraper, TopicLinkParams } from './scrapers/viewforum';
-import { prependBaseUrl } from '../utils/utils';
+import { prependBaseUrl, parseHTML } from '../utils/utils';
 import { viewTopicScraper } from './scrapers/viewtopic';
 
-export const parseHTML = (html: string): Promise<Window> => {
-  return new Promise((resolve, reject) => {
-    jsdom.env(html, (error: Error, window: Window) => {
-      if (error) reject(error);
-      resolve(window);
-    });
-  });
-};
 
 export const login = async (username: string, password: string) => {
   const data: { [key: string]: string } = {

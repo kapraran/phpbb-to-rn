@@ -2,6 +2,7 @@ import React from 'react';
 import { PostData } from '../api/scrapers/viewtopic';
 import { View, StyleSheet } from 'react-native';
 import { IconButton, Text, Colors } from 'react-native-paper';
+import RenderHtml from './RenderHtml';
 
 interface Props {
   post: PostData;
@@ -21,7 +22,7 @@ const PostCard = (props: Props) => (
       <Text>{props.post.user.username}</Text>
     </View>
     <View>
-      <Text>{props.post.content}</Text>
+      <RenderHtml html={props.post.content} />
     </View>
   </View>
 );
@@ -29,6 +30,8 @@ const PostCard = (props: Props) => (
 const styles = StyleSheet.create({
   container: {
     elevation: 1,
+    marginHorizontal: 8,
+    marginVertical: 4,
   },
   header: {
     flexDirection: 'row',
