@@ -15,6 +15,7 @@ export interface ForumItem {
 
 export interface ForumLinkParams {
   f: number;
+  start?: number;
 }
 
 const getParams = function (row: Element): ForumLinkParams {

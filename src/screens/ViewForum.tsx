@@ -53,7 +53,13 @@ const ViewForum = ({ navigation, route }: Props) => {
           color={item.unread ? Colors.green800 : Colors.grey700}
         />
       )}
-      onPress={() => {}}
+      onPress={() => {
+        navigation.navigate('ViewTopic', {
+          title: item.title,
+          forumName: route.params.title,
+          params: item.params,
+        });
+      }}
       onLongPress={() => {
         setVisible(true);
       }}

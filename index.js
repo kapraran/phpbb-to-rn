@@ -13,6 +13,7 @@ import Stack from './src/navigator';
 import Home from './src/screens/Home';
 import Login from './src/screens/Login';
 import ViewForum from './src/screens/ViewForum';
+import ViewTopic from './src/screens/ViewTopic';
 
 const theme = {
   ...DefaultTheme,
@@ -32,6 +33,7 @@ export default function Main() {
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="ViewForum" component={ViewForum} />
+          <Stack.Screen name="ViewTopic" component={ViewTopic} />
         </Stack.Navigator>
       </PaperProvider>
     </NavigationContainer>
