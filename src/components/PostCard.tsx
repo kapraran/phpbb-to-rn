@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.grey300,
+    borderBottomColor: Colors.grey100,
   },
   username: {
     marginLeft: 8,
