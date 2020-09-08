@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Linking } from 'react-native';
 import { Text, Colors, Caption, Paragraph } from 'react-native-paper';
 import { parseHTML } from '../utils/utils';
 import NetworkImage from './NetworkImage';
@@ -26,6 +26,7 @@ const renderQuote = (quote: HTMLElement, index: number, prefixKey: string) => {
 
 const renderElement = (node: ChildNode, index: number, prefixKey: string) => {
   const element = node as HTMLElement;
+  const key = prefixKey + index;
 
   switch (element.tagName) {
     case 'DIV':
@@ -33,7 +34,23 @@ const renderElement = (node: ChildNode, index: number, prefixKey: string) => {
         return renderQuote(element, index, prefixKey);
       }
     case 'BR':
-      return <View key={prefixKey + index} style={{ height: 8 }} />;
+      return <View key={key} style={{ height: 8 }} />;
+    case 'A':
+      const text = element.textContent;
+      const href = (element as HTMLAnchorElement).href;
+      return (
+        <Text
+          key={key}
+          onPress={() => {
+            console.log('open');
+            Linking.canOpenURL(href).then((supported) =>
+              supported ? Linking.openURL(href) : null,
+            );
+          }}
+          style={styles.anchor}>
+          {text}
+        </Text>
+      );
     case 'IMG':
     // return (
     //   <NetworkImage
@@ -41,7 +58,12 @@ const renderElement = (node: ChildNode, index: number, prefixKey: string) => {
     //     uri={(node as HTMLImageElement).src}></NetworkImage>
     // );
     default:
-      return null;
+      // return null;
+      return (
+        <View
+          key={key}
+          style={{ height: 8, backgroundColor: Colors.red200 }}></View>
+      );
   }
 };
 
@@ -102,6 +124,10 @@ const styles = StyleSheet.create({
   },
   quoteContent: {
     padding: 16,
+  },
+  anchor: {
+    color: Colors.green500,
+    textDecorationLine: 'underline',
   },
 });
 
