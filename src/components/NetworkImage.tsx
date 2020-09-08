@@ -12,12 +12,11 @@ const NetworkImage = (props: Props) => {
   const [height, setHeight] = useState(0);
 
   useEffect(() => {
-    if (width + height > 1) return;
-
-    Image.getSize(uri, (width, height) => {
-      setWidth(width);
-      setHeight(height);
-    });
+    // if (width + height > 1) return;
+    // Image.getSize(uri, (width, height) => {
+    //   setWidth(width);
+    //   setHeight(height);
+    // });
   });
 
   return (

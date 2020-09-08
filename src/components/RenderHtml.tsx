@@ -38,11 +38,16 @@ const RenderHtml = (props: Props) => {
   const [nodes, setNodes] = useState<ChildNode[]>([]);
 
   useEffect(() => {
+    let mounted = true;
     if (nodes.length > 0) return;
 
     parseHTML(props.html).then((window) => {
-      setNodes(Array.from(window.document.body.childNodes));
+      if (mounted) setNodes(Array.from(window.document.body.childNodes));
     });
+
+    return () => {
+      mounted = false;
+    };
   });
 
   return (

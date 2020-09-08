@@ -1,7 +1,7 @@
 import React from 'react';
 import { PostData } from '../api/scrapers/viewtopic';
 import { View, StyleSheet } from 'react-native';
-import { IconButton, Text, Colors } from 'react-native-paper';
+import { IconButton, Text, Colors, Avatar } from 'react-native-paper';
 import RenderHtml from './RenderHtml';
 
 interface Props {
@@ -11,15 +11,8 @@ interface Props {
 const PostCard = (props: Props) => (
   <View style={styles.container}>
     <View style={styles.header}>
-      <IconButton
-        icon={
-          props.post.user.avatarUrl !== null
-            ? { uri: props.post.user.avatarUrl }
-            : {}
-        }
-        size={32}
-      />
-      <Text>{props.post.user.username}</Text>
+      <Avatar.Icon size={24} icon="account" />
+      <Text style={styles.username}>{props.post.user.username}</Text>
     </View>
     <View>
       <RenderHtml html={props.post.content} />
@@ -31,15 +24,21 @@ const styles = StyleSheet.create({
   container: {
     elevation: 1,
     marginHorizontal: 4,
-    marginVertical: 2,
+    marginVertical: 6,
     borderRadius: 4,
     backgroundColor: Colors.white,
   },
   header: {
     flexDirection: 'row',
+    alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: Colors.grey300,
+  },
+  username: {
+    marginLeft: 8,
+    fontSize: 16,
+    fontWeight: '500',
   },
   content: {
     padding: 16,
