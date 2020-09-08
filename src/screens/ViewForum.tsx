@@ -7,12 +7,13 @@ import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigator';
 import { getViewForumTopics } from '../api/api';
 import { TopicLinkData } from '../api/scrapers/viewforum';
-import { List, Colors } from 'react-native-paper';
+import { List, Colors, Button } from 'react-native-paper';
 import { firstLetterUpper } from '../utils/utils';
 import Pagination from '../components/Pagination';
 import TopicLinkModal from '../components/TopicLinkModal';
 import { PaginationData } from '../api/scrapers/pagination';
 import { ForumLinkParams } from '../api/scrapers/home';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 type ViewForumNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -32,6 +33,8 @@ const ViewForum = ({ navigation, route }: Props) => {
     current: 1,
     max: 1,
   });
+
+  let flatListRef: FlatList<TopicLinkData> | null = null;
 
   const fetchTopics = (params: ForumLinkParams) => {
     setTopics([]);
@@ -105,12 +108,34 @@ const ViewForum = ({ navigation, route }: Props) => {
           current={pagination.current}
           max={pagination.max}
           onPageChange={onPageChange}></Pagination>
+        <View style={styles.footerNav}>
+          <Button
+            // style={styles.footerNavBtn}
+            mode="outlined"
+            color={Colors.green700}
+            contentStyle={{ flex: 1 }}
+            onPress={() => {
+              navigation.navigate('Home');
+            }}>
+            <Icon name="home" size={20} color={Colors.green700} />
+          </Button>
+          <Button
+            // style={styles.footerNavBtn}
+            mode="outlined"
+            color={Colors.green700}
+            onPress={() =>
+              flatListRef?.scrollToOffset({ animated: true, offset: 0 })
+            }>
+            <Icon name="arrow-upward" size={20} color={Colors.green700} />
+          </Button>
+        </View>
       </View>
     ) : null;
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
+        ref={(ref) => (flatListRef = ref)}
         data={topics}
         renderItem={renderItem}
         ListHeaderComponent={renderHeader}
@@ -127,6 +152,13 @@ const ViewForum = ({ navigation, route }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+  },
+  footerNav: {
+    flexDirection: 'row',
+    marginBottom: 8,
+    marginHorizontal: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

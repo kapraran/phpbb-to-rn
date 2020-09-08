@@ -22,8 +22,8 @@ const PostCard = (props: Props) => (
 
 const styles = StyleSheet.create({
   container: {
-    elevation: 1,
-    marginHorizontal: 4,
+    elevation: 2,
+    marginHorizontal: 8,
     marginVertical: 6,
     borderRadius: 4,
     backgroundColor: Colors.white,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, FlatList, SafeAreaView } from 'react-native';
-import { Colors } from 'react-native-paper';
+import { StyleSheet, FlatList, SafeAreaView, View } from 'react-native';
+import { Colors, Button, List } from 'react-native-paper';
 import AppHeader from '../components/AppHeader';
 import SpinnerView from '../components/SpinnerView';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -48,7 +48,14 @@ const ViewTopic = ({ navigation, route }: Props) => {
     return unsubscribe;
   }, [navigation, route]);
 
-  const renderItem = ({ item }: { item: PostData }) => <PostCard post={item} />;
+  const renderItem = ({ index, item }: { index: number; item: PostData }) => (
+    <View>
+      {index == 0 ? (
+        <List.Subheader>Σελίδα {pagination.current}</List.Subheader>
+      ) : null}
+      <PostCard post={item} />
+    </View>
+  );
 
   const renderHeader = () => (
     <AppHeader
@@ -69,10 +76,19 @@ const ViewTopic = ({ navigation, route }: Props) => {
 
   const renderFooter = () =>
     posts.length > 0 ? (
-      <Pagination
-        current={pagination.current}
-        max={pagination.max}
-        onPageChange={onPageChange}></Pagination>
+      <View>
+        <Button
+          mode="contained"
+          icon="plus"
+          style={{ margin: 8 }}
+          onPress={() => {}}>
+          Απαντηση
+        </Button>
+        <Pagination
+          current={pagination.current}
+          max={pagination.max}
+          onPageChange={onPageChange}></Pagination>
+      </View>
     ) : null;
 
   // TODO user post id or url params + index
@@ -97,7 +113,6 @@ const ViewTopic = ({ navigation, route }: Props) => {
         stickyHeaderIndices={[0]}
         contentContainerStyle={{
           flexGrow: 1,
-          backgroundColor: Colors.green100,
         }}
       />
     </SafeAreaView>

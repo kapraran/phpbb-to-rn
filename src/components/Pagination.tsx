@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Button, IconButton, Title } from 'react-native-paper';
+import { Button, IconButton, Text, Colors } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {
   current: number;
@@ -9,6 +10,16 @@ interface Props {
 }
 
 const Pagination = ({ current, max, onPageChange }: Props) => {
+  const onPressFirst = () => {
+    if (current == 1) return;
+    onPageChange(0);
+  };
+
+  const onPressLast = () => {
+    if (current == max) return;
+    onPageChange((max - 1) * 25);
+  };
+
   const onPressPrev = () => {
     if (current <= 1) return;
     onPageChange((current - 2) * 25);
@@ -21,15 +32,37 @@ const Pagination = ({ current, max, onPageChange }: Props) => {
 
   return (
     <View style={styles.container}>
-      <IconButton icon="chevron-left" onPress={onPressPrev}></IconButton>
-
-      <View>
-        <Title>
-          {current} / {max}
-        </Title>
+      <View style={styles.buttonGroup}>
+        <Button
+          compact={true}
+          mode="contained"
+          onPress={onPressFirst}
+          style={{ marginRight: 4 }}>
+          <Icon name="arrow-collapse-left" size={20} color={Colors.white} />
+        </Button>
+        <Button compact={true} mode="contained" onPress={onPressPrev}>
+          <Icon name="arrow-left" size={20} color={Colors.white} />
+        </Button>
       </View>
 
-      <IconButton icon="chevron-right" onPress={onPressNext}></IconButton>
+      <View>
+        <Text>
+          {current} από {max}
+        </Text>
+      </View>
+
+      <View style={styles.buttonGroup}>
+        <Button
+          compact={true}
+          mode="contained"
+          onPress={onPressNext}
+          style={{ marginRight: 4 }}>
+          <Icon name="arrow-right" size={20} color={Colors.white} />
+        </Button>
+        <Button compact={true} mode="contained" onPress={onPressLast}>
+          <Icon name="arrow-collapse-right" size={20} color={Colors.white} />
+        </Button>
+      </View>
     </View>
   );
 };
@@ -40,8 +73,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 8,
-    marginVertical: 16,
+    margin: 8,
+  },
+  buttonGroup: {
+    flexDirection: 'row',
   },
 });
 
