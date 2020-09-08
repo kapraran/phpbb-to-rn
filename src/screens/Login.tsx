@@ -10,7 +10,6 @@ const Login = () => {
   const navigation = useNavigation();
 
   const onSubmit = () => {
-    console.log(`u:${username} p:${password}`);
     login(username, password).then((logged) => {
       if (logged) {
         navigation.navigate('Home');

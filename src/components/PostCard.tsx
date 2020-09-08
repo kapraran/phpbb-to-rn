@@ -11,7 +11,7 @@ interface Props {
 const PostCard = (props: Props) => (
   <View style={styles.container}>
     <View style={styles.header}>
-      <Avatar.Icon size={24} icon="account" />
+      <Avatar.Icon size={32} icon="account" />
       <Text style={styles.username}>{props.post.user.username}</Text>
     </View>
     <View>

@@ -3,6 +3,7 @@ import { commonScraper } from './scrapers/common';
 import { viewForumScraper, TopicLinkParams } from './scrapers/viewforum';
 import { prependBaseUrl, parseHTML } from '../utils/utils';
 import { viewTopicScraper } from './scrapers/viewtopic';
+import { paginationScraper } from './scrapers/pagination';
 
 export const login = async (username: string, password: string) => {
   const data: { [key: string]: string } = {
@@ -51,7 +52,9 @@ export const getIndexForums = async () => {
 
 export const getViewForumTopics = async (params: ForumLinkParams) => {
   const response = await fetch(
-    `http://panathagrforum.net/viewforum.php?f=${params.f}`,
+    `http://panathagrforum.net/viewforum.php?f=${params.f}&start=${
+      params.start || 0
+    }`,
     {
       credentials: 'include',
     },
@@ -62,23 +65,19 @@ export const getViewForumTopics = async (params: ForumLinkParams) => {
 
   const common = commonScraper(document);
   const topics = viewForumScraper(document);
+  const pagination = paginationScraper(document);
 
   return {
     ...common,
+    pagination,
     topics,
   };
 };
 
-export const getViewTopicPosts = async (
-  params: TopicLinkParams,
-  unread: boolean = false,
-) => {
+export const getViewTopicPosts = async (params: TopicLinkParams) => {
   const { f, t, start } = params;
-  const pageStr = unread
-    ? '&view=unread'
-    : start !== undefined
-    ? `&start=${start}`
-    : '';
+  const unread = start === undefined;
+  const pageStr = unread ? '&view=unread' : `&start=${start || 0}`;
 
   const response = await fetch(
     prependBaseUrl(`viewtopic.php?f=${f}&t=${t}${pageStr}`),
@@ -92,9 +91,11 @@ export const getViewTopicPosts = async (
 
   const common = commonScraper(document);
   const posts = viewTopicScraper(document);
+  const pagination = paginationScraper(document);
 
   return {
     ...common,
+    pagination,
     posts,
   };
 };

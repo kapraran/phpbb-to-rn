@@ -11,6 +11,8 @@ import { List, Colors } from 'react-native-paper';
 import { firstLetterUpper } from '../utils/utils';
 import Pagination from '../components/Pagination';
 import TopicLinkModal from '../components/TopicLinkModal';
+import { PaginationData } from '../api/scrapers/pagination';
+import { ForumLinkParams } from '../api/scrapers/home';
 
 type ViewForumNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -26,16 +28,25 @@ type Props = {
 const ViewForum = ({ navigation, route }: Props) => {
   const [topics, setTopics] = useState<TopicLinkData[]>([]);
   const [visible, setVisible] = React.useState(false);
+  const [pagination, setPagination] = React.useState<PaginationData>({
+    current: 1,
+    max: 1,
+  });
+
+  const fetchTopics = (params: ForumLinkParams) => {
+    setTopics([]);
+
+    getViewForumTopics(params).then(({ isLogged, topics, pagination }) => {
+      setTopics(topics);
+      setPagination(pagination);
+
+      if (!isLogged) navigation.navigate('Login');
+    });
+  };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      if (topics.length > 0) return;
-
-      getViewForumTopics(route.params.params).then((viewForumData) => {
-        setTopics(viewForumData.topics);
-
-        if (!viewForumData.isLogged) navigation.navigate('Login');
-      });
+      fetchTopics(route.params.params);
     });
 
     return unsubscribe;
@@ -76,13 +87,24 @@ const ViewForum = ({ navigation, route }: Props) => {
 
   const renderEmpty = () => <SpinnerView />;
 
+  const onPageChange = (start: number) => {
+    console.log(start);
+    fetchTopics({
+      ...route.params.params,
+      start,
+    });
+  };
+
   const renderFooter = () =>
     topics.length > 0 ? (
       <View>
         <TopicLinkModal
           visible={visible}
           onDismiss={() => setVisible(false)}></TopicLinkModal>
-        <Pagination current={1} max={2}></Pagination>
+        <Pagination
+          current={pagination.current}
+          max={pagination.max}
+          onPageChange={onPageChange}></Pagination>
       </View>
     ) : null;
 

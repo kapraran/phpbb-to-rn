@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, FlatList, SafeAreaView, View } from 'react-native';
+import { StyleSheet, FlatList, SafeAreaView } from 'react-native';
 import { Colors } from 'react-native-paper';
 import AppHeader from '../components/AppHeader';
 import SpinnerView from '../components/SpinnerView';
@@ -10,6 +10,8 @@ import Pagination from '../components/Pagination';
 import { PostData } from '../api/scrapers/viewtopic';
 import { getViewTopicPosts } from '../api/api';
 import PostCard from '../components/PostCard';
+import { PaginationData } from '../api/scrapers/pagination';
+import { TopicLinkParams } from '../api/scrapers/viewforum';
 
 type ViewTopicNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -24,14 +26,23 @@ type Props = {
 
 const ViewTopic = ({ navigation, route }: Props) => {
   const [posts, setPosts] = useState<PostData[]>([]);
+  const [pagination, setPagination] = React.useState<PaginationData>({
+    current: 1,
+    max: 1,
+  });
+
+  const fetchPosts = (params: TopicLinkParams) => {
+    setPosts([]);
+
+    getViewTopicPosts(params).then(({ posts, pagination }) => {
+      setPosts(posts);
+      setPagination(pagination);
+    });
+  };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      if (posts.length > 0) return;
-
-      getViewTopicPosts(route.params.params, true).then(({ posts }) => {
-        setPosts(posts);
-      });
+      fetchPosts(route.params.params);
     });
 
     return unsubscribe;
@@ -49,8 +60,20 @@ const ViewTopic = ({ navigation, route }: Props) => {
 
   const renderEmpty = () => <SpinnerView />;
 
+  const onPageChange = (start: number) => {
+    fetchPosts({
+      ...route.params.params,
+      start,
+    });
+  };
+
   const renderFooter = () =>
-    posts.length > 0 ? <Pagination current={1} max={2}></Pagination> : null;
+    posts.length > 0 ? (
+      <Pagination
+        current={pagination.current}
+        max={pagination.max}
+        onPageChange={onPageChange}></Pagination>
+    ) : null;
 
   // TODO user post id or url params + index
   const createKey = (username: string, content: string, index: number) => {
