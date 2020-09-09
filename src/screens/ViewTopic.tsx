@@ -12,7 +12,6 @@ import { getViewTopicPosts } from '../api/api';
 import PostCard from '../components/PostCard';
 import { PaginationData } from '../api/scrapers/pagination';
 import { TopicLinkParams } from '../api/scrapers/viewforum';
-import { ForumLinkParams } from '../api/scrapers/home';
 
 type ViewTopicNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -82,7 +81,12 @@ const ViewTopic = ({ navigation, route }: Props) => {
           mode="contained"
           icon="plus"
           style={{ margin: 8 }}
-          onPress={() => {}}>
+          onPress={() => {
+            navigation.navigate('Reply', {
+              title: route.params.title,
+              params: route.params.params,
+            });
+          }}>
           Απαντηση
         </Button>
         <Pagination

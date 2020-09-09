@@ -4,6 +4,7 @@ import { viewForumScraper, TopicLinkParams } from './scrapers/viewforum';
 import { prependBaseUrl, parseHTML } from '../utils/utils';
 import { viewTopicScraper } from './scrapers/viewtopic';
 import { paginationScraper } from './scrapers/pagination';
+import { replyScraper, ReplyInputField } from './scrapers/reply';
 
 export const login = async (username: string, password: string) => {
   const data: { [key: string]: string } = {
@@ -99,3 +100,42 @@ export const getViewTopicPosts = async (params: TopicLinkParams) => {
     posts,
   };
 };
+
+export const getReplyFields = async (params: TopicLinkParams) => {
+  const { f, t } = params;
+
+  const response = await fetch(
+    prependBaseUrl(`posting.php?mode=reply&f=${f}&t=${t}`),
+    {
+      credentials: 'include',
+    },
+  );
+
+  const window = await parseHTML(await response.text());
+  const document = window.document;
+
+  const common = commonScraper(document);
+  const reply = replyScraper(document);
+
+  return {
+    ...common,
+    reply,
+  };
+};
+
+export const postReply = async (params: TopicLinkParams, fields: ReplyInputField[]) => {
+  const {f, t} = params
+  const formData = fields.reduce<FormData>((formData, field) => {
+    formData.append(field.name, field.value);
+    return formData;
+  }, new FormData());
+
+  const response = await fetch(
+    prependBaseUrl(`posting.php?mode=reply&f=${f}&t=${t}`),
+    {
+      method: 'POST',
+      credentials: 'include',
+      body: formData
+    },
+  );
+}
