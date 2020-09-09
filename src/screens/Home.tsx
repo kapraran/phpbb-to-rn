@@ -15,6 +15,14 @@ type Props = {
   navigation: HomeNavigationProp;
 };
 
+const renderItem = ({ item }: { item: GroupItem }) => (
+  <ForumGroup item={item} />
+);
+
+const renderHeader = () => <AppHeader title="Panatha Forum" />;
+
+const renderEmpty = () => <SpinnerView />;
+
 const Home = ({ navigation }: Props) => {
   const [forums, setForums] = useState<GroupItem[]>([]);
 
@@ -30,14 +38,6 @@ const Home = ({ navigation }: Props) => {
 
     return unsubscribe;
   }, [navigation]);
-
-  const renderItem = ({ item }: { item: GroupItem }) => (
-    <ForumGroup item={item} />
-  );
-
-  const renderHeader = () => <AppHeader title="Panatha Forum" />;
-
-  const renderEmpty = () => <SpinnerView />;
 
   return (
     <SafeAreaView style={styles.container}>

@@ -12,6 +12,7 @@ import { getViewTopicPosts } from '../api/api';
 import PostCard from '../components/PostCard';
 import { PaginationData } from '../api/scrapers/pagination';
 import { TopicLinkParams } from '../api/scrapers/viewforum';
+import { ForumLinkParams } from '../api/scrapers/home';
 
 type ViewTopicNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -23,6 +24,16 @@ type Props = {
   navigation: ViewTopicNavigationProp;
   route: ViewTopicRouteProp;
 };
+
+const renderHeader = ({ title, forumName }: RootStackParamList["ViewTopic"]) => (
+  <AppHeader
+    title={title}
+    subtitle={forumName}
+    showBack={true}
+  />
+);
+
+const renderEmpty = () => <SpinnerView />;
 
 const ViewTopic = ({ navigation, route }: Props) => {
   const [posts, setPosts] = useState<PostData[]>([]);
@@ -57,16 +68,6 @@ const ViewTopic = ({ navigation, route }: Props) => {
     </View>
   );
 
-  const renderHeader = () => (
-    <AppHeader
-      title={route.params.title}
-      subtitle={route.params.forumName}
-      showBack={true}
-    />
-  );
-
-  const renderEmpty = () => <SpinnerView />;
-
   const onPageChange = (start: number) => {
     fetchPosts({
       ...route.params.params,
@@ -74,6 +75,7 @@ const ViewTopic = ({ navigation, route }: Props) => {
     });
   };
 
+  // TODO move to a separate file
   const renderFooter = () =>
     posts.length > 0 ? (
       <View>
@@ -104,7 +106,7 @@ const ViewTopic = ({ navigation, route }: Props) => {
       <FlatList
         data={posts}
         renderItem={renderItem}
-        ListHeaderComponent={renderHeader}
+        ListHeaderComponent={() => renderHeader(route.params)}
         ListEmptyComponent={renderEmpty}
         ListFooterComponent={renderFooter}
         keyExtractor={({ user, content }, index) =>

@@ -51,6 +51,8 @@ const renderElement = (node: ChildNode, index: number, prefixKey: string) => {
           {text}
         </Text>
       );
+    case 'STRONG':
+        return <Text style={{fontWeight: '500', fontSize: 18}}>{element.textContent?.trim()}</Text>
     case 'IMG':
     // return (
     //   <NetworkImage
