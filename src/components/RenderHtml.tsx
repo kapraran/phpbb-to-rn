@@ -1,15 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image, Linking } from 'react-native';
-import { Text, Colors, Caption, Paragraph } from 'react-native-paper';
+import { View, StyleSheet, Linking, Dimensions } from 'react-native';
+import {
+  Text,
+  Colors,
+  Caption,
+  Paragraph,
+  Button,
+  IconButton,
+} from 'react-native-paper';
 import { parseHTML } from '../utils/utils';
-import NetworkImage from './NetworkImage';
+import Image from 'react-native-scalable-image';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {
   html: string;
 }
 
-const renderQuote = (quote: HTMLElement, index: number, prefixKey: string) => {
-  const username = quote.children[0].innerHTML.split(' ')[0];
+const renderNoneElement = (key: string) => (
+  <View key={key} style={styles.none}></View>
+);
+
+const renderQuote = (
+  quote: HTMLElement,
+  index: number,
+  prefixKey: string,
+  widthModifier: number,
+) => {
+  const username = quote.children[0].innerHTML.split(' ')[0].trim();
 
   return (
     <View style={styles.quote} key={prefixKey + index}>
@@ -18,30 +35,57 @@ const renderQuote = (quote: HTMLElement, index: number, prefixKey: string) => {
         {renderNodes(
           Array.from(quote.children[1].childNodes),
           prefixKey + index + 'q',
+          widthModifier,
         )}
       </View>
     </View>
   );
 };
 
-const renderImage = (img: HTMLImageElement, key: string) => {
-  const url = img.src
+const renderImage = (img: HTMLImageElement, key: string, maxWidth: number) => {
+  const uri = img.src;
 
-  if (url.startsWith('/images/smilies/')) {
-    return <Text key={key}>☘️</Text>
+  if (uri.startsWith('/images/smilies/')) {
+    return <Text key={key}>☘️</Text>;
   }
 
-  return null;
+  return (
+    <View
+      key={key}
+      style={{
+        alignItems: 'flex-start',
+      }}>
+      <Image width={maxWidth} source={{ uri }}></Image>
+      <IconButton
+        icon="open-in-new"
+        style={{
+          marginTop: -28,
+        }}
+        onPress={() =>
+          Linking.canOpenURL(uri).then((supported) =>
+            supported ? Linking.openURL(uri) : null,
+          )
+        }
+        color={Colors.white}
+        size={16}></IconButton>
+    </View>
+  );
 };
 
-const renderElement = (node: ChildNode, index: number, prefixKey: string) => {
+const renderElement = (
+  node: ChildNode,
+  index: number,
+  prefixKey: string,
+  maxWidth: number,
+) => {
   const element = node as HTMLElement;
   const key = prefixKey + index;
 
   switch (element.tagName) {
     case 'DIV':
       if (element.className == 'quotewrapper') {
-        return renderQuote(element, index, prefixKey);
+        const newMaxWidth = Math.max(50, maxWidth - 24);
+        return renderQuote(element, index, prefixKey, newMaxWidth);
       }
     case 'BR':
       return <View key={key} style={{ height: 8 }} />;
@@ -52,7 +96,6 @@ const renderElement = (node: ChildNode, index: number, prefixKey: string) => {
         <Text
           key={key}
           onPress={() => {
-            console.log('open');
             Linking.canOpenURL(href).then((supported) =>
               supported ? Linking.openURL(href) : null,
             );
@@ -69,35 +112,36 @@ const renderElement = (node: ChildNode, index: number, prefixKey: string) => {
         </Text>
       );
     case 'IMG':
-      return renderImage(element as HTMLImageElement, key);
-    // return (
-    //   <NetworkImage
-    //     key={index}
-    //     uri={(node as HTMLImageElement).src}></NetworkImage>
-    // );
+      return renderImage(element as HTMLImageElement, key, maxWidth);
     default:
-      // return null;
-      return (
-        <View
-          key={key}
-          style={{ height: 8, backgroundColor: Colors.red200 }}></View>
-      );
+      return renderNoneElement(key);
   }
 };
 
-const renderNode = (node: ChildNode, index: number, prefixKey: string) => {
+const renderNode = (
+  node: ChildNode,
+  index: number,
+  prefixKey: string,
+  maxWidth: number,
+) => {
   switch (node.nodeType) {
     case node.TEXT_NODE:
       return <Paragraph key={prefixKey + index}>{node.textContent}</Paragraph>;
     case node.ELEMENT_NODE:
-      return renderElement(node, index, prefixKey);
+      return renderElement(node, index, prefixKey, maxWidth);
     default:
       return null;
   }
 };
 
-const renderNodes = (nodes: ChildNode[], prefixKey: string) => {
-  return nodes.map((node, index) => renderNode(node, index, prefixKey));
+const renderNodes = (
+  nodes: ChildNode[],
+  prefixKey: string,
+  maxWidth: number,
+) => {
+  return nodes.map((node, index) =>
+    renderNode(node, index, prefixKey, maxWidth),
+  );
 };
 
 const RenderHtml = (props: Props) => {
@@ -116,9 +160,11 @@ const RenderHtml = (props: Props) => {
     };
   });
 
+  const maxWidth = Dimensions.get('window').width - 76;
+
   return (
     <View style={styles.container}>
-      <View>{renderNodes(nodes, ':')}</View>
+      <View>{renderNodes(nodes, ':', maxWidth)}</View>
     </View>
   );
 };
@@ -147,6 +193,7 @@ const styles = StyleSheet.create({
     color: Colors.green500,
     textDecorationLine: 'underline',
   },
+  none: { height: 8, backgroundColor: Colors.red200 },
 });
 
 export default RenderHtml;

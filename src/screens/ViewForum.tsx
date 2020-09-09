@@ -91,7 +91,6 @@ const ViewForum = ({ navigation, route }: Props) => {
   const renderEmpty = () => <SpinnerView />;
 
   const onPageChange = (start: number) => {
-    console.log(start);
     fetchTopics({
       ...route.params.params,
       start,
