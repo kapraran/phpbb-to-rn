@@ -25,12 +25,11 @@ type Props = {
   route: ViewTopicRouteProp;
 };
 
-const renderHeader = ({ title, forumName }: RootStackParamList["ViewTopic"]) => (
-  <AppHeader
-    title={title}
-    subtitle={forumName}
-    showBack={true}
-  />
+const renderHeader = ({
+  title,
+  forumName,
+}: RootStackParamList['ViewTopic']) => (
+  <AppHeader title={title} subtitle={forumName} showBack={true} />
 );
 
 const renderEmpty = () => <SpinnerView />;

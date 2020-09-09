@@ -13,7 +13,7 @@ const renderQuote = (quote: HTMLElement, index: number, prefixKey: string) => {
 
   return (
     <View style={styles.quote} key={prefixKey + index}>
-      <Caption style={styles.quoteHeader}>{username}:</Caption>
+      <Caption style={styles.quoteHeader}>{username}</Caption>
       <View style={styles.quoteContent}>
         {renderNodes(
           Array.from(quote.children[1].childNodes),
@@ -22,6 +22,16 @@ const renderQuote = (quote: HTMLElement, index: number, prefixKey: string) => {
       </View>
     </View>
   );
+};
+
+const renderImage = (img: HTMLImageElement, key: string) => {
+  const url = img.src
+
+  if (url.startsWith('/images/smilies/')) {
+    return <Text key={key}>☘️</Text>
+  }
+
+  return null;
 };
 
 const renderElement = (node: ChildNode, index: number, prefixKey: string) => {
@@ -52,8 +62,14 @@ const renderElement = (node: ChildNode, index: number, prefixKey: string) => {
         </Text>
       );
     case 'STRONG':
-        return <Text style={{fontWeight: '500', fontSize: 18}}>{element.textContent?.trim()}</Text>
+    case 'SPAN':
+      return (
+        <Text key={key} style={{ fontWeight: '700', fontSize: 18 }}>
+          {element.textContent?.trim()}
+        </Text>
+      );
     case 'IMG':
+      return renderImage(element as HTMLImageElement, key);
     // return (
     //   <NetworkImage
     //     key={index}
