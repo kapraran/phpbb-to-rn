@@ -7,6 +7,7 @@ export type RootStackParamList = {
   Login: undefined;
   ViewForum: { title: string; groupName: string; params: ForumLinkParams };
   ViewTopic: { title: string; forumName: string; params: TopicLinkParams };
+  Reply: {}
 };
 
 const stackNavigator = createStackNavigator<RootStackParamList>();

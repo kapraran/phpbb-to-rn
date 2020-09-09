@@ -14,6 +14,7 @@ import Home from './src/screens/Home';
 import Login from './src/screens/Login';
 import ViewForum from './src/screens/ViewForum';
 import ViewTopic from './src/screens/ViewTopic';
+import Reply from './src/screens/Reply';
 
 const theme = {
   ...DefaultTheme,
@@ -34,6 +35,7 @@ export default function Main() {
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="ViewForum" component={ViewForum} />
           <Stack.Screen name="ViewTopic" component={ViewTopic} />
+          <Stack.Screen name="Reply" component={Reply} />
         </Stack.Navigator>
       </PaperProvider>
     </NavigationContainer>
