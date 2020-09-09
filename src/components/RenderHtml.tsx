@@ -5,20 +5,16 @@ import {
   Colors,
   Caption,
   Paragraph,
-  Button,
   IconButton,
 } from 'react-native-paper';
 import { parseHTML } from '../utils/utils';
 import Image from 'react-native-scalable-image';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {
   html: string;
 }
 
-const renderNoneElement = (key: string) => (
-  <View key={key} style={styles.none}></View>
-);
+const renderNone = (key: string) => <View key={key} style={styles.none}></View>;
 
 const renderQuote = (
   quote: HTMLElement,
@@ -72,6 +68,23 @@ const renderImage = (img: HTMLImageElement, key: string, maxWidth: number) => {
   );
 };
 
+const renderCode = (element: HTMLDivElement, key: string) => {
+  const content = element.querySelector('.codecontent')!.textContent!.trim();
+
+  return (
+    <Paragraph
+      key={key}
+      style={{
+        fontFamily: 'monospace',
+        backgroundColor: Colors.green50,
+        padding: 16,
+        borderRadius: 4,
+      }}>
+      {content}
+    </Paragraph>
+  );
+};
+
 const renderElement = (
   node: ChildNode,
   index: number,
@@ -87,6 +100,12 @@ const renderElement = (
         const newMaxWidth = Math.max(50, maxWidth - 24);
         return renderQuote(element, index, prefixKey, newMaxWidth);
       }
+
+      if (element.className == 'codewrapper') {
+        return renderCode(element, key);
+      }
+
+      return renderNone(key);
     case 'BR':
       return <View key={key} style={{ height: 8 }} />;
     case 'A':
@@ -114,7 +133,7 @@ const renderElement = (
     case 'IMG':
       return renderImage(element as HTMLImageElement, key, maxWidth);
     default:
-      return renderNoneElement(key);
+      return renderNone(key);
   }
 };
 
@@ -193,7 +212,7 @@ const styles = StyleSheet.create({
     color: Colors.green500,
     textDecorationLine: 'underline',
   },
-  none: { height: 8, backgroundColor: Colors.red200 },
+  none: { height: 8, backgroundColor: Colors.orange400 },
 });
 
 export default RenderHtml;

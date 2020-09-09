@@ -4,10 +4,7 @@ import { RootStackParamList } from '../navigator';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
-type ReplyNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Reply'
->;
+type ReplyNavigationProp = StackNavigationProp<RootStackParamList, 'Reply'>;
 type ReplyRouteProp = RouteProp<RootStackParamList, 'Reply'>;
 
 type Props = {
@@ -16,13 +13,9 @@ type Props = {
 };
 
 const Reply = ({ navigation, route }: Props) => {
-  return (
-    <View></View>
-  );
+  return <View></View>;
 };
 
-const styles = StyleSheet.create({
-
-});
+const styles = StyleSheet.create({});
 
 export default Reply;
