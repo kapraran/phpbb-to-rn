@@ -18,7 +18,7 @@ type Props = {
 };
 
 const Reply = ({ navigation, route }: Props) => {
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [fields, setFields] = useState<ReplyInputField[]>([]);
   const { title } = route.params;
@@ -35,23 +35,23 @@ const Reply = ({ navigation, route }: Props) => {
   }, [navigation, route]);
 
   const onSubmit = () => {
-    const submitFields = [...fields]
+    const submitFields = [...fields];
 
     submitFields.push({
       name: 'subject',
       value: `Re: ${route.params.title}`,
-      type: 'visible'
-    })
+      type: 'visible',
+    });
 
     submitFields.push({
       name: 'message',
       value: message,
-      type: 'visible'
-    })
+      type: 'visible',
+    });
 
     postReply(route.params.params, submitFields).then(() => {
-      navigation.goBack()
-    })
+      navigation.goBack();
+    });
   };
 
   return (

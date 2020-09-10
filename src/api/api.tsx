@@ -123,8 +123,11 @@ export const getReplyFields = async (params: TopicLinkParams) => {
   };
 };
 
-export const postReply = async (params: TopicLinkParams, fields: ReplyInputField[]) => {
-  const {f, t} = params
+export const postReply = async (
+  params: TopicLinkParams,
+  fields: ReplyInputField[],
+) => {
+  const { f, t } = params;
   const formData = fields.reduce<FormData>((formData, field) => {
     formData.append(field.name, field.value);
     return formData;
@@ -135,7 +138,7 @@ export const postReply = async (params: TopicLinkParams, fields: ReplyInputField
     {
       method: 'POST',
       credentials: 'include',
-      body: formData
+      body: formData,
     },
   );
-}
+};
