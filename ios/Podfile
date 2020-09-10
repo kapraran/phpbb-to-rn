@@ -3,7 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'PhpbbToReact' do
+target 'PanathaForum' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
@@ -11,7 +11,7 @@ target 'PhpbbToReact' do
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
 
-  target 'PhpbbToReactTests' do
+  target 'PanathaForumTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -26,10 +26,10 @@ target 'PhpbbToReact' do
   end
 end
 
-target 'PhpbbToReact-tvOS' do
-  # Pods for PhpbbToReact-tvOS
+target 'PanathaForum-tvOS' do
+  # Pods for PanathaForum-tvOS
 
-  target 'PhpbbToReact-tvOSTests' do
+  target 'PanathaForum-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
