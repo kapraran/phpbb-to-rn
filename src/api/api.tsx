@@ -52,6 +52,8 @@ export const getIndexForums = async () => {
 };
 
 export const getViewForumTopics = async (params: ForumLinkParams) => {
+  const now = Date.now();
+  console.log(`started fetch ${((Date.now() - now) / 1000).toFixed(2)}s`);
   const response = await fetch(
     `http://panathagrforum.net/viewforum.php?f=${params.f}&start=${
       params.start || 0
@@ -61,12 +63,21 @@ export const getViewForumTopics = async (params: ForumLinkParams) => {
     },
   );
 
+  console.log(`ended fetch ${((Date.now() - now) / 1000).toFixed(2)}s`);
+
   const window = await parseHTML(await response.text());
   const document = window.document;
 
+  console.log(`ended parse ${((Date.now() - now) / 1000).toFixed(2)}s`);
+
   const common = commonScraper(document);
+  console.log(`ended scrapers1 ${((Date.now() - now) / 1000).toFixed(2)}s`);
+
   const topics = viewForumScraper(document);
+  console.log(`ended scrapers2 ${((Date.now() - now) / 1000).toFixed(2)}s`);
+
   const pagination = paginationScraper(document);
+  console.log(`ended scrapers3 ${((Date.now() - now) / 1000).toFixed(2)}s`);
 
   return {
     ...common,
