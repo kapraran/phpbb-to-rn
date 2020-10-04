@@ -110,7 +110,7 @@ const renderElement = (
       return <View key={key} style={{ height: 8 }} />;
     case 'A':
       const text = element.textContent;
-      const href = (element as HTMLAnchorElement).href;
+      const href = (element as HTMLAnchorElement).getAttribute('href');
       return (
         <Text
           key={key}

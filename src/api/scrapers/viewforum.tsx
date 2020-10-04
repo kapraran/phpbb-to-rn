@@ -43,7 +43,7 @@ const getRowAuthor = (row: HTMLTableRowElement): string => {
 const getRowLinkQuery = (row: HTMLTableRowElement) => {
   const td = row.children[1];
   const a = td.querySelector<HTMLAnchorElement>('a')!;
-  const params = new URL(prependBaseUrl(a!.href)).searchParams;
+  const params = new URL(prependBaseUrl(a.getAttribute('href')!)).searchParams;
 
   const f = parseInt(params.get('f')!);
   const t = parseInt(params.get('t')!);

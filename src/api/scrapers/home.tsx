@@ -20,7 +20,7 @@ export interface ForumLinkParams {
 
 const getParams = function (row: Element): ForumLinkParams {
   const a = row.querySelector<HTMLAnchorElement>('.forumlink')!;
-  const params = new URL(prependBaseUrl(a!.href)).searchParams;
+  const params = new URL(prependBaseUrl(a.getAttribute('href')!)).searchParams;
 
   return { f: parseInt(params.get('f')!) };
 };
