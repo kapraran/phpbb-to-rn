@@ -68,23 +68,15 @@ export const viewForumScraper = (document: Document) => {
   const tableEl = document.querySelector('#pagecontent table.tablebg')!;
   const rows = tableEl.querySelectorAll('tr');
 
-  const befLoop = Date.now();
   const topics = Array.from(rows).reduce<TopicLinkData[]>((topics, row) => {
-    const start = Date.now();
-    dbg(':::RS', start);
     const rowType = resolveRowType(row);
-    dbg(':::RE', start);
 
     if (rowType != TopicRowType.TOPIC) return topics;
 
-    dbg(':::0', start);
     const author = getRowAuthor(row);
-    dbg(':::1', start);
     const title = getRowTitle(row);
-    dbg(':::2', start);
     const replies = getRowReplies(row);
     const { f, t, unread } = getRowLinkQuery(row);
-    dbg(':::4', start);
 
     topics.push({
       author,
@@ -96,7 +88,6 @@ export const viewForumScraper = (document: Document) => {
 
     return topics;
   }, []);
-  dbg('After loop', befLoop);
 
   return topics;
 };
