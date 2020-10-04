@@ -1,4 +1,4 @@
-import { prependBaseUrl } from '../../utils/utils';
+import { dbg, prependBaseUrl } from '../../utils/utils';
 import { URL } from 'react-native-url-polyfill';
 
 export interface TopicLinkParams {
@@ -22,13 +22,6 @@ export enum TopicRowType {
   TOPIC,
 }
 
-const getRowParams = function (row: Element): TopicLinkParams {
-  const a = row.querySelector<HTMLAnchorElement>('.topictitle')!;
-  const params = new URL(prependBaseUrl(a!.href)).searchParams;
-
-  return { f: parseInt(params.get('f')!), t: parseInt(params.get('t')!) };
-};
-
 const resolveRowType = (row: HTMLTableRowElement): TopicRowType => {
   const firstChild = row.children[0];
 
@@ -47,13 +40,20 @@ const getRowAuthor = (row: HTMLTableRowElement): string => {
   return row.querySelector('p.topicauthor')!.textContent || '';
 };
 
-const isRowUnread = (row: HTMLTableRowElement): boolean => {
+const getRowLinkQuery = (row: HTMLTableRowElement) => {
   const td = row.children[1];
   const a = td.querySelector<HTMLAnchorElement>('a')!;
+  const params = new URL(prependBaseUrl(a!.href)).searchParams;
 
-  if (a.tagName !== 'A') return false;
+  const f = parseInt(params.get('f')!);
+  const t = parseInt(params.get('t')!);
+  const unread = params.get('view') == 'unread';
 
-  return a.href.indexOf('&view=unread') > -1;
+  return {
+    f,
+    t,
+    unread,
+  };
 };
 
 const getRowTitle = (row: HTMLTableRowElement): string => {
@@ -68,27 +68,35 @@ export const viewForumScraper = (document: Document) => {
   const tableEl = document.querySelector('#pagecontent table.tablebg')!;
   const rows = tableEl.querySelectorAll('tr');
 
+  const befLoop = Date.now();
   const topics = Array.from(rows).reduce<TopicLinkData[]>((topics, row) => {
+    const start = Date.now();
+    dbg(':::RS', start);
     const rowType = resolveRowType(row);
+    dbg(':::RE', start);
 
     if (rowType != TopicRowType.TOPIC) return topics;
 
+    dbg(':::0', start);
     const author = getRowAuthor(row);
+    dbg(':::1', start);
     const title = getRowTitle(row);
+    dbg(':::2', start);
     const replies = getRowReplies(row);
-    const unread = isRowUnread(row);
-    const params = getRowParams(row);
+    const { f, t, unread } = getRowLinkQuery(row);
+    dbg(':::4', start);
 
     topics.push({
       author,
       title,
       replies,
       unread,
-      params,
+      params: { f, t },
     });
 
     return topics;
   }, []);
+  dbg('After loop', befLoop);
 
   return topics;
 };
