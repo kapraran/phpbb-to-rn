@@ -1,10 +1,25 @@
 import { homeScraper, ForumLinkParams } from './scrapers/home';
 import { commonScraper } from './scrapers/common';
 import { viewForumScraper, TopicLinkParams } from './scrapers/viewforum';
-import { prependBaseUrl, parseHTML } from '../utils/utils';
+import { prependBaseUrl, parseHTML, dbg } from '../utils/utils';
 import { viewTopicScraper } from './scrapers/viewtopic';
 import { paginationScraper } from './scrapers/pagination';
 import { replyScraper, ReplyInputField } from './scrapers/reply';
+
+const fetchDocument = async (
+  input: RequestInfo,
+  init: RequestInit | undefined = undefined,
+) => {
+  init = {
+    ...init,
+    credentials: 'include',
+  };
+
+  const response = await fetch(input, init);
+  const window = await parseHTML(await response.text());
+
+  return window.document;
+};
 
 export const login = async (username: string, password: string) => {
   const data: { [key: string]: string } = {
@@ -35,12 +50,11 @@ export const login = async (username: string, password: string) => {
   return commonScraper(window.document).isLogged;
 };
 
+/**
+ * Returns a list of all available forums in groups
+ */
 export const getIndexForums = async () => {
-  const response = await fetch('http://panathagrforum.net/', {
-    credentials: 'include',
-  });
-  const window = await parseHTML(await response.text());
-  const document = window.document;
+  const document = await fetchDocument('http://panathagrforum.net/');
 
   const common = commonScraper(document);
   const groupItems = homeScraper(document);
@@ -51,22 +65,27 @@ export const getIndexForums = async () => {
   };
 };
 
+/**
+ * Returns a list of topic for a certain forum
+ *
+ * @param params
+ */
 export const getViewForumTopics = async (params: ForumLinkParams) => {
-  const response = await fetch(
+  const start = Date.now();
+  const document = await fetchDocument(
     `http://panathagrforum.net/viewforum.php?f=${params.f}&start=${
       params.start || 0
     }`,
-    {
-      credentials: 'include',
-    },
   );
 
-  const window = await parseHTML(await response.text());
-  const document = window.document;
+  dbg('Fetch ok', start);
 
   const common = commonScraper(document);
+  dbg('p1', start);
   const topics = viewForumScraper(document);
+  dbg('p2', start);
   const pagination = paginationScraper(document);
+  dbg('p3', start);
 
   return {
     ...common,
@@ -80,15 +99,9 @@ export const getViewTopicPosts = async (params: TopicLinkParams) => {
   const unread = start === undefined;
   const pageStr = unread ? '&view=unread' : `&start=${start || 0}`;
 
-  const response = await fetch(
+  const document = await fetchDocument(
     prependBaseUrl(`viewtopic.php?f=${f}&t=${t}${pageStr}`),
-    {
-      credentials: 'include',
-    },
   );
-
-  const window = await parseHTML(await response.text());
-  const document = window.document;
 
   const common = commonScraper(document);
   const posts = viewTopicScraper(document);
