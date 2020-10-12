@@ -32,7 +32,7 @@ const Reply = ({ navigation, route }: Props) => {
     });
 
     return unsubscribe;
-  }, [navigation, route]);
+  }, []);
 
   const onSubmit = () => {
     const submitFields = [...fields];

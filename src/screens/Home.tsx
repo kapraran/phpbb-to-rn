@@ -27,17 +27,11 @@ const Home = ({ navigation }: Props) => {
   const [forums, setForums] = useState<GroupItem[]>([]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      if (forums.length > 0) return;
-
-      getIndexForums().then((indexData) => {
-        if (!indexData.isLogged) return navigation.navigate('Login');
-        setForums(indexData.groupItems);
-      });
+    getIndexForums().then((indexData) => {
+      setForums(indexData.groupItems);
+      if (!indexData.isLogged) return navigation.navigate('Login');
     });
-
-    return unsubscribe;
-  }, [navigation]);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

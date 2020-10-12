@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, FlatList, SafeAreaView, View } from 'react-native';
-import { Colors, Button, List } from 'react-native-paper';
+import { Button, List } from 'react-native-paper';
 import AppHeader from '../components/AppHeader';
 import SpinnerView from '../components/SpinnerView';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -35,6 +35,7 @@ const renderEmpty = () => <SpinnerView />;
 
 const ViewTopic = ({ navigation, route }: Props) => {
   const [posts, setPosts] = useState<PostData[]>([]);
+  const [unreadIndex, setUnreadIndex] = useState(0);
   const [pagination, setPagination] = React.useState<PaginationData>({
     current: 1,
     max: 1,
@@ -46,6 +47,9 @@ const ViewTopic = ({ navigation, route }: Props) => {
     getViewTopicPosts(params).then(({ posts, pagination }) => {
       setPosts(posts);
       setPagination(pagination);
+
+      const index = posts.findIndex((post) => post.hasUnreadAnchor);
+      setUnreadIndex(index < 0 ? 0 : index);
     });
   };
 
@@ -107,6 +111,8 @@ const ViewTopic = ({ navigation, route }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
+        // initialScrollIndex={unreadIndex}
+        initialNumToRender={25}
         data={posts}
         renderItem={renderItem}
         ListHeaderComponent={() => renderHeader(route.params)}

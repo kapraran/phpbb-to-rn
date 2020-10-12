@@ -34,6 +34,8 @@ const ViewForum = ({ navigation, route }: Props) => {
     max: 1,
   });
 
+  const params = route.params.params;
+
   let flatListRef: FlatList<TopicLinkData> | null = null;
 
   const fetchTopics = (params: ForumLinkParams) => {
@@ -49,11 +51,11 @@ const ViewForum = ({ navigation, route }: Props) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      fetchTopics(route.params.params);
+      fetchTopics(params);
     });
 
     return unsubscribe;
-  }, [navigation, route, setTopics]);
+  }, [params]);
 
   const renderItem = ({ item }: { item: TopicLinkData }) => (
     <List.Item
