@@ -51,6 +51,8 @@ const ViewForum = ({ navigation, route }: Props) => {
     });
   };
 
+  const onRefresh = () => fetchTopics(params);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       fetchTopics(params);
@@ -148,6 +150,8 @@ const ViewForum = ({ navigation, route }: Props) => {
         stickyHeaderIndices={[0]}
         contentContainerStyle={{ flexGrow: 1 }}
         ItemSeparatorComponent={renderSeparator}
+        refreshing={false}
+        onRefresh={onRefresh}
       />
     </SafeAreaView>
   );

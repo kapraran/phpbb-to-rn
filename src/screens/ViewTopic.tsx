@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, FlatList, SafeAreaView, View } from 'react-native';
-import { Button, List } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import AppHeader from '../components/AppHeader';
 import SpinnerView from '../components/SpinnerView';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -9,9 +9,9 @@ import { RootStackParamList } from '../navigator';
 import Pagination from '../components/Pagination';
 import { PostData } from '../api/scrapers/viewtopic';
 import { getViewTopicPosts } from '../api/api';
-import PostCard from '../components/PostCard';
 import { PaginationData } from '../api/scrapers/pagination';
 import { TopicLinkParams } from '../api/scrapers/viewforum';
+import PostItem from '../components/PostItem';
 
 type ViewTopicNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -53,6 +53,10 @@ const ViewTopic = ({ navigation, route }: Props) => {
     });
   };
 
+  const onRefresh = () => {
+    fetchPosts(route.params.params);
+  };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       fetchPosts(route.params.params);
@@ -62,12 +66,7 @@ const ViewTopic = ({ navigation, route }: Props) => {
   }, [navigation, route]);
 
   const renderItem = ({ index, item }: { index: number; item: PostData }) => (
-    <View>
-      {index == 0 ? (
-        <List.Subheader>Σελίδα {pagination.current}</List.Subheader>
-      ) : null}
-      <PostCard post={item} />
-    </View>
+    <PostItem index={index} item={item} pagination={pagination} />
   );
 
   const onPageChange = (start: number) => {
@@ -111,8 +110,6 @@ const ViewTopic = ({ navigation, route }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        // initialScrollIndex={unreadIndex}
-        initialNumToRender={25}
         data={posts}
         renderItem={renderItem}
         ListHeaderComponent={() => renderHeader(route.params)}
@@ -125,6 +122,12 @@ const ViewTopic = ({ navigation, route }: Props) => {
         contentContainerStyle={{
           flexGrow: 1,
         }}
+        refreshing={false}
+        onRefresh={onRefresh}
+        initialNumToRender={4}
+        maxToRenderPerBatch={2}
+        updateCellsBatchingPeriod={50}
+        windowSize={7}
       />
     </SafeAreaView>
   );

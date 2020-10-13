@@ -1,7 +1,7 @@
 import { homeScraper, ForumLinkParams } from './scrapers/home';
 import { commonScraper } from './scrapers/common';
 import { viewForumScraper, TopicLinkParams } from './scrapers/viewforum';
-import { prependBaseUrl, parseHTML, dbg } from '../utils/utils';
+import { prependBaseUrl, parseHTML } from '../utils/utils';
 import { viewTopicScraper } from './scrapers/viewtopic';
 import { paginationScraper } from './scrapers/pagination';
 import { replyScraper, ReplyInputField } from './scrapers/reply';
@@ -71,21 +71,15 @@ export const getIndexForums = async () => {
  * @param params
  */
 export const getViewForumTopics = async (params: ForumLinkParams) => {
-  const start = Date.now();
   const document = await fetchDocument(
     `http://panathagrforum.net/viewforum.php?f=${params.f}&start=${
       params.start || 0
     }`,
   );
 
-  dbg('Fetch ok', start);
-
   const common = commonScraper(document);
-  dbg('p1', start);
   const topics = viewForumScraper(document);
-  dbg('p2', start);
   const pagination = paginationScraper(document);
-  dbg('p3', start);
 
   return {
     ...common,
