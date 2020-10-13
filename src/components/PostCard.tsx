@@ -1,8 +1,9 @@
 import React from 'react';
 import { PostData } from '../api/scrapers/viewtopic';
 import { View, StyleSheet } from 'react-native';
-import { IconButton, Text, Colors, Avatar } from 'react-native-paper';
+import { Text, Colors, Avatar } from 'react-native-paper';
 import RenderHtml from './RenderHtml';
+import PostAvatar from './PostAvatar';
 
 interface Props {
   post: PostData;
@@ -11,7 +12,8 @@ interface Props {
 const PostCard = (props: Props) => (
   <View style={styles.container}>
     <View style={styles.header}>
-      <Avatar.Icon size={32} icon="account" />
+      {/* <Avatar.Icon size={32} icon="account" /> */}
+      <PostAvatar size={32} uri={props.post.user.avatarUrl} />
       <Text style={styles.username}>{props.post.user.username}</Text>
     </View>
     <View>

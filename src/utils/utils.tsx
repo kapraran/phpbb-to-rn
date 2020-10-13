@@ -14,6 +14,11 @@ export const prependBaseUrl = (suffix: string) => {
   return `http://panathagrforum.net${slash}${suffix}`;
 };
 
+export const prependBaseUrlIfNeeded = (uri: string) => {
+  if (uri.charAt(0) === '/') return prependBaseUrl(uri);
+  return uri;
+};
+
 export const firstLetterUpper = (str: string) => {
   return str
     .split(' ')

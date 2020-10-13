@@ -26,6 +26,8 @@ type Props = {
   route: ViewForumRouteProp;
 };
 
+const renderSeparator = () => <View style={styles.separator} />;
+
 const ViewForum = ({ navigation, route }: Props) => {
   const [topics, setTopics] = useState<TopicLinkData[]>([]);
   const [visible, setVisible] = React.useState(false);
@@ -145,6 +147,7 @@ const ViewForum = ({ navigation, route }: Props) => {
         keyExtractor={({ title }) => title}
         stickyHeaderIndices={[0]}
         contentContainerStyle={{ flexGrow: 1 }}
+        ItemSeparatorComponent={renderSeparator}
       />
     </SafeAreaView>
   );
@@ -160,6 +163,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#ddd',
   },
 });
 
