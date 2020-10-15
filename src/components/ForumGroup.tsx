@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { List } from 'react-native-paper';
 import { firstLetterUpper } from '../utils/utils';
-import { GroupItem } from '../api/scrapers/home';
+import { ForumItem, GroupItem } from '../api/scrapers/home';
 import { useNavigation } from '@react-navigation/native';
 
 interface Props {
@@ -11,6 +11,19 @@ interface Props {
 const ForumGroup = ({ item }: Props) => {
   const { name, forums } = item;
   const navigation = useNavigation();
+
+  const openForum = useCallback(
+    (forum: ForumItem, name: string) => {
+      const { title, linkParams } = forum;
+
+      navigation.navigate('ViewForum', {
+        title: title,
+        groupName: firstLetterUpper(name),
+        params: linkParams,
+      });
+    },
+    [forums, name],
+  );
 
   return (
     <List.Section>
@@ -22,13 +35,7 @@ const ForumGroup = ({ item }: Props) => {
           description={forum.description}
           descriptionNumberOfLines={3}
           left={(props) => <List.Icon {...props} icon="folder" />}
-          onPress={() =>
-            navigation.navigate('ViewForum', {
-              title: forum.title,
-              groupName: firstLetterUpper(name),
-              params: forum.linkParams,
-            })
-          }
+          onPress={() => openForum(forum, name)}
         />
       ))}
     </List.Section>

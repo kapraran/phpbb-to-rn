@@ -9,27 +9,30 @@ interface Props {
   post: PostData;
 }
 
-const PostCard = (props: Props) => (
-  <View style={styles.container}>
+const containerStyles = (unread: boolean) =>
+  StyleSheet.create({
+    container: {
+      elevation: 2,
+      marginHorizontal: 8,
+      marginVertical: 6,
+      borderRadius: 4,
+      backgroundColor: unread ? Colors.yellow100 : Colors.white,
+    },
+  }).container;
+
+const PostCard = ({ post }: Props) => (
+  <View style={containerStyles(post.hasUnreadAnchor)}>
     <View style={styles.header}>
-      {/* <Avatar.Icon size={32} icon="account" /> */}
-      <PostAvatar size={32} uri={props.post.user.avatarUrl} />
-      <Text style={styles.username}>{props.post.user.username}</Text>
+      <PostAvatar size={32} uri={post.user.avatarUrl} />
+      <Text style={styles.username}>{post.user.username}</Text>
     </View>
     <View>
-      <RenderHtml html={props.post.content} />
+      <RenderHtml html={post.content} />
     </View>
   </View>
 );
 
 const styles = StyleSheet.create({
-  container: {
-    elevation: 2,
-    marginHorizontal: 8,
-    marginVertical: 6,
-    borderRadius: 4,
-    backgroundColor: Colors.white,
-  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',

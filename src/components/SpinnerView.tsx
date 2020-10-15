@@ -4,7 +4,7 @@ import { ActivityIndicator } from 'react-native-paper';
 
 const SpinnerView = () => (
   <View style={styles.container}>
-    <ActivityIndicator animating={true} />
+    <ActivityIndicator animating={true} size={32} />
   </View>
 );
 

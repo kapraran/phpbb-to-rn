@@ -11,19 +11,14 @@ interface Props {
   pagination: PaginationData;
 }
 
-class PostItem extends React.PureComponent<Props> {
-  render() {
-    const { index, item, pagination } = this.props;
+const PostItem = ({ index, item, pagination }: Props) => (
+  <View>
+    {/* Display the number of page before the first post */}
+    {index == 0 ? (
+      <List.Subheader>Σελίδα {pagination.current}</List.Subheader>
+    ) : null}
+    <PostCard post={item} />
+  </View>
+);
 
-    return (
-      <View>
-        {index == 0 ? (
-          <List.Subheader>Σελίδα {pagination.current}</List.Subheader>
-        ) : null}
-        <PostCard post={item} />
-      </View>
-    );
-  }
-}
-
-export default PostItem;
+export default React.memo(PostItem);
