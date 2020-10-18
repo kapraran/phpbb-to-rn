@@ -36,19 +36,16 @@ export const login = async (username: string, password: string) => {
     .join('&');
 
   // fetch document
-  const document = await fetchDocument(
-    prependBaseUrl('ucp.php?mode=login'),
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Host': 'panathagrforum.net',
-        'User-Agent': 'insomnia/2020.3.3',
-      },
-      body: formBody,
-      redirect: 'follow',
+  const document = await fetchDocument(prependBaseUrl('ucp.php?mode=login'), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Host: 'panathagrforum.net',
+      'User-Agent': 'insomnia/2020.3.3',
     },
-  );
+    body: formBody,
+    redirect: 'follow',
+  });
 
   // scrape document
   return commonScraper(document).isLogged;
@@ -93,8 +90,8 @@ export const getViewForumTopics = async (params: ForumLinkParams) => {
 };
 
 /**
- * 
- * @param params 
+ *
+ * @param params
  */
 export const getViewTopicPosts = async (params: TopicLinkParams) => {
   const { f, t, start } = params;
@@ -117,8 +114,8 @@ export const getViewTopicPosts = async (params: TopicLinkParams) => {
 };
 
 /**
- * 
- * @param params 
+ *
+ * @param params
  */
 export const getReplyFields = async (params: TopicLinkParams) => {
   const { f, t } = params;
@@ -143,9 +140,9 @@ export const getReplyFields = async (params: TopicLinkParams) => {
 };
 
 /**
- * 
- * @param params 
- * @param fields 
+ *
+ * @param params
+ * @param fields
  */
 export const postReply = async (
   params: TopicLinkParams,
