@@ -7,21 +7,22 @@ import { paginationScraper } from './scrapers/pagination';
 import { replyScraper, ReplyInputField } from './scrapers/reply';
 
 const fetchDocument = async (
-  input: RequestInfo,
-  init: RequestInit | undefined = undefined,
+  uri: RequestInfo,
+  options: RequestInit | undefined = undefined,
 ) => {
-  init = {
-    ...init,
+  options = {
+    ...options,
     credentials: 'include',
   };
 
-  const response = await fetch(input, init);
+  const response = await fetch(uri, options);
   const window = await parseHTML(await response.text());
 
   return window.document;
 };
 
 export const login = async (username: string, password: string) => {
+  // form data
   const data: { [key: string]: string } = {
     username,
     password,
@@ -29,25 +30,28 @@ export const login = async (username: string, password: string) => {
     login: 'login',
   };
 
+  // convert to url encoded form
   const formBody = Object.keys(data)
     .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`)
     .join('&');
 
-  const response = await fetch('http://panathagrforum.net/ucp.php?mode=login', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Host: 'panathagrforum.net',
-      'User-Agent': 'insomnia/2020.3.3',
+  // fetch document
+  const document = await fetchDocument(
+    prependBaseUrl('ucp.php?mode=login'),
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Host': 'panathagrforum.net',
+        'User-Agent': 'insomnia/2020.3.3',
+      },
+      body: formBody,
+      redirect: 'follow',
     },
-    redirect: 'follow',
-    body: formBody,
-  });
+  );
 
-  const window = await parseHTML(await response.text());
-
-  return commonScraper(window.document).isLogged;
+  // scrape document
+  return commonScraper(document).isLogged;
 };
 
 /**
@@ -71,12 +75,12 @@ export const getIndexForums = async () => {
  * @param params
  */
 export const getViewForumTopics = async (params: ForumLinkParams) => {
+  const { f, start } = params;
   const document = await fetchDocument(
-    `http://panathagrforum.net/viewforum.php?f=${params.f}&start=${
-      params.start || 0
-    }`,
+    prependBaseUrl(`viewforum.php?f=${f}&start=${start || 0}`),
   );
 
+  // scrape document
   const common = commonScraper(document);
   const topics = viewForumScraper(document);
   const pagination = paginationScraper(document);
@@ -88,6 +92,10 @@ export const getViewForumTopics = async (params: ForumLinkParams) => {
   };
 };
 
+/**
+ * 
+ * @param params 
+ */
 export const getViewTopicPosts = async (params: TopicLinkParams) => {
   const { f, t, start } = params;
   const unread = start === undefined;
@@ -108,6 +116,10 @@ export const getViewTopicPosts = async (params: TopicLinkParams) => {
   };
 };
 
+/**
+ * 
+ * @param params 
+ */
 export const getReplyFields = async (params: TopicLinkParams) => {
   const { f, t } = params;
 
@@ -130,6 +142,11 @@ export const getReplyFields = async (params: TopicLinkParams) => {
   };
 };
 
+/**
+ * 
+ * @param params 
+ * @param fields 
+ */
 export const postReply = async (
   params: TopicLinkParams,
   fields: ReplyInputField[],
