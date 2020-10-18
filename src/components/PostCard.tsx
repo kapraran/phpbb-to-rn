@@ -9,17 +9,18 @@ interface Props {
   post: PostData;
 }
 
-const PostCard = (props: Props) => (
-  <View style={styles.container}>
-    <PostCardHeader
-      username={props.post.user.username}
-      avatarUrl={props.post.user.avatarUrl}
-    />
-    <View>
-      <RenderHtml html={props.post.content} />
+const PostCard = ({ post }: Props) => {
+  const { user, date, content } = post;
+
+  return (
+    <View style={styles.container}>
+      <PostCardHeader user={user} date={date} />
+      <View>
+        <RenderHtml html={content} />
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

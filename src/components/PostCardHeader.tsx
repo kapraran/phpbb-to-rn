@@ -1,17 +1,23 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Colors, Text } from 'react-native-paper';
+import { PostUserData } from '../api/scrapers/viewtopic';
+import { DateTime } from 'luxon';
 import PostAvatar from './PostAvatar';
 
 interface Props {
-  username: string;
-  avatarUrl: string | null;
+  user: PostUserData;
+  date: Date;
 }
 
-const PostCardHeader = ({ username, avatarUrl }: Props) => (
+const timeAgo = (date: Date) =>
+  DateTime.fromJSDate(date).setLocale('el').toRelativeCalendar();
+
+const PostCardHeader = ({ user, date }: Props) => (
   <View style={styles.header}>
-    <PostAvatar size={32} uri={avatarUrl} />
-    <Text style={styles.username}>{username}</Text>
+    <PostAvatar size={32} uri={user.avatarUrl} />
+    <Text style={styles.username}>{user.username}</Text>
+    <Text>{timeAgo(date)}</Text>
   </View>
 );
 
