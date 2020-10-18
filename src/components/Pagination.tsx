@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, IconButton, Text, Colors } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { POSTS_PER_PAGE } from '../utils/constants';
 
 interface Props {
   current: number;
@@ -17,17 +18,17 @@ const Pagination = ({ current, max, onPageChange }: Props) => {
 
   const onPressLast = () => {
     if (current == max) return;
-    onPageChange((max - 1) * 25);
+    onPageChange((max - 1) * POSTS_PER_PAGE);
   };
 
   const onPressPrev = () => {
     if (current <= 1) return;
-    onPageChange((current - 2) * 25);
+    onPageChange((current - 2) * POSTS_PER_PAGE);
   };
 
   const onPressNext = () => {
     if (current >= max) return;
-    onPageChange(current * 25);
+    onPageChange(current * POSTS_PER_PAGE);
   };
 
   return (

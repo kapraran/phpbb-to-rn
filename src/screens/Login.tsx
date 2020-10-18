@@ -1,26 +1,31 @@
-import React from 'react';
-import { View, StyleSheet, Linking } from 'react-native';
-import { Title, TextInput, Button, Paragraph } from 'react-native-paper';
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Title, TextInput, Button, Snackbar } from 'react-native-paper';
 import { login } from '../api/api';
 import { useNavigation } from '@react-navigation/native';
 
 const Login = () => {
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [visible, setVisible] = useState(false);
+
   const navigation = useNavigation();
 
   const onSubmit = () => {
     login(username, password).then((logged) => {
-      if (logged) {
-        navigation.navigate('Home');
-      }
+      if (logged) return navigation.navigate('Home');
+
+      setVisible(true);
     });
   };
+
+  const onDismiss = () => setVisible(false);
 
   return (
     <View style={styles.container}>
       <Title style={styles.pageTitle}>Login</Title>
 
+      {/* username */}
       <TextInput
         mode="outlined"
         label="Username"
@@ -29,6 +34,7 @@ const Login = () => {
         style={styles.username}
       />
 
+      {/* password */}
       <TextInput
         mode="outlined"
         label="Password"
@@ -42,11 +48,10 @@ const Login = () => {
         Submit
       </Button>
 
-      <Paragraph
-        style={styles.createAccount}
-        onPress={() => Linking.openURL('https://google.com')}>
-        If you don't have an account, click here
-      </Paragraph>
+      {/* Error message */}
+      <Snackbar visible={visible} onDismiss={onDismiss}>
+        Λανθασμένα στοιχεία σύνδεσης. Δοκιμάστε ξανά.
+      </Snackbar>
     </View>
   );
 };

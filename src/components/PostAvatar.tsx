@@ -9,7 +9,7 @@ interface Props {
   uri: string | null;
 }
 
-const getCustomizedStylesheet = (size: number) =>
+const styles = (size: number) =>
   StyleSheet.create({
     container: {
       justifyContent: 'center',
@@ -23,7 +23,7 @@ const getCustomizedStylesheet = (size: number) =>
   });
 
 const PostAvatar = ({ size, uri }: Props) => (
-  <View style={getCustomizedStylesheet(size).container}>
+  <View style={styles(size).container}>
     {uri === null ? (
       <Avatar.Icon size={size} icon="account" />
     ) : (
@@ -35,4 +35,4 @@ const PostAvatar = ({ size, uri }: Props) => (
   </View>
 );
 
-export default PostAvatar;
+export default React.memo(PostAvatar);

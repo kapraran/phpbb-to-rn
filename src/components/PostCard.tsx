@@ -11,7 +11,10 @@ interface Props {
 
 const PostCard = (props: Props) => (
   <View style={styles.container}>
-    <PostCardHeader username={props.post.user.username} avatarUrl={props.post.user.avatarUrl} />
+    <PostCardHeader
+      username={props.post.user.username}
+      avatarUrl={props.post.user.avatarUrl}
+    />
     <View>
       <RenderHtml html={props.post.content} />
     </View>

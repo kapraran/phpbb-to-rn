@@ -8,14 +8,12 @@ interface Props {
   avatarUrl: string | null;
 }
 
-const PostCardHeader = ({ username, avatarUrl }: Props) => {
-  return (
-    <View style={styles.header}>
-      <PostAvatar size={32} uri={avatarUrl} />
-      <Text style={styles.username}>{username}</Text>
-    </View>
-  );
-};
+const PostCardHeader = ({ username, avatarUrl }: Props) => (
+  <View style={styles.header}>
+    <PostAvatar size={32} uri={avatarUrl} />
+    <Text style={styles.username}>{username}</Text>
+  </View>
+);
 
 const styles = StyleSheet.create({
   header: {
@@ -32,4 +30,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PostCardHeader;
+export default React.memo(PostCardHeader);
