@@ -1,5 +1,5 @@
 import React from 'react';
-import { List } from 'react-native-paper';
+import { List, Colors } from 'react-native-paper';
 import { firstLetterUpper } from '../utils/utils';
 import { GroupItem } from '../api/scrapers/home';
 import { useNavigation } from '@react-navigation/native';
@@ -21,7 +21,13 @@ const ForumGroup = ({ item }: Props) => {
           title={forum.title}
           description={forum.description}
           descriptionNumberOfLines={3}
-          left={(props) => <List.Icon {...props} icon="folder" />}
+          left={(props) => (
+            <List.Icon
+              {...props}
+              icon="folder"
+              color={forum.hasUnread ? Colors.green700 : Colors.grey400}
+            />
+          )}
           onPress={() =>
             navigation.navigate('ViewForum', {
               title: forum.title,

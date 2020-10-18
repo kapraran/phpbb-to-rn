@@ -115,7 +115,6 @@ const ViewForum = ({ navigation, route }: Props) => {
           onPageChange={onPageChange}></Pagination>
         <View style={styles.footerNav}>
           <Button
-            // style={styles.footerNavBtn}
             mode="outlined"
             color={Colors.green700}
             contentStyle={{ flex: 1 }}
@@ -125,7 +124,6 @@ const ViewForum = ({ navigation, route }: Props) => {
             <Icon name="home" size={20} color={Colors.green700} />
           </Button>
           <Button
-            // style={styles.footerNavBtn}
             mode="outlined"
             color={Colors.green700}
             onPress={() =>
