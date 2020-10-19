@@ -16,4 +16,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SpinnerView;
+export default React.memo(SpinnerView);

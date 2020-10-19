@@ -102,7 +102,7 @@ const renderElement = (
       }
 
       if (element.className == 'codewrapper') {
-        return renderCode(element, key);
+        return renderCode(element as HTMLDivElement, key);
       }
 
       return renderNone(key);
@@ -115,8 +115,8 @@ const renderElement = (
         <Text
           key={key}
           onPress={() => {
-            Linking.canOpenURL(href).then((supported) =>
-              supported ? Linking.openURL(href) : null,
+            Linking.canOpenURL(href!).then((supported) =>
+              supported ? Linking.openURL(href!) : null,
             );
           }}
           style={styles.anchor}>

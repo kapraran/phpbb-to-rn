@@ -1,49 +1,34 @@
 import React from 'react';
 import { PostData } from '../api/scrapers/viewtopic';
 import { View, StyleSheet } from 'react-native';
-import { Text, Colors, Avatar } from 'react-native-paper';
+import { Colors } from 'react-native-paper';
 import RenderHtml from './RenderHtml';
-import PostAvatar from './PostAvatar';
+import PostCardHeader from './PostCardHeader';
 
 interface Props {
   post: PostData;
 }
 
-const containerStyles = (unread: boolean) =>
-  StyleSheet.create({
-    container: {
-      elevation: 2,
-      marginHorizontal: 8,
-      marginVertical: 6,
-      borderRadius: 4,
-      backgroundColor: unread ? Colors.yellow100 : Colors.white,
-    },
-  }).container;
+const PostCard = ({ post }: Props) => {
+  const { user, date, content } = post;
 
-const PostCard = ({ post }: Props) => (
-  <View style={containerStyles(post.hasUnreadAnchor)}>
-    <View style={styles.header}>
-      <PostAvatar size={32} uri={post.user.avatarUrl} />
-      <Text style={styles.username}>{post.user.username}</Text>
+  return (
+    <View style={styles.container}>
+      <PostCardHeader user={user} date={date} />
+      <View>
+        <RenderHtml html={content} />
+      </View>
     </View>
-    <View>
-      <RenderHtml html={post.content} />
-    </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.grey100,
-  },
-  username: {
-    marginLeft: 8,
-    fontSize: 16,
-    fontWeight: '500',
+  container: {
+    elevation: 2,
+    marginHorizontal: 8,
+    marginVertical: 6,
+    borderRadius: 4,
+    backgroundColor: Colors.white,
   },
   content: {
     padding: 16,

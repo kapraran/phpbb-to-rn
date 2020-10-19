@@ -13,10 +13,12 @@ interface Props {
 
 const PostItem = ({ index, item, pagination }: Props) => (
   <View>
-    {/* Display the number of page before the first post */}
+    {/* Display page number if first post */}
     {index == 0 ? (
       <List.Subheader>Σελίδα {pagination.current}</List.Subheader>
     ) : null}
+
+    {/* Display post content */}
     <PostCard post={item} />
   </View>
 );

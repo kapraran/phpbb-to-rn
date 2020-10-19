@@ -10,6 +10,7 @@ export interface GroupItem {
 export interface ForumItem {
   title: string;
   description: string;
+  hasUnread: boolean;
   linkParams: ForumLinkParams;
 }
 
@@ -18,9 +19,9 @@ export interface ForumLinkParams {
   start?: number;
 }
 
-const getParams = function (row: Element): ForumLinkParams {
-  const a = row.querySelector<HTMLAnchorElement>('.forumlink')!;
-  const params = new URL(prependBaseUrl(a.getAttribute('href')!)).searchParams;
+const getParams = function (link: HTMLAnchorElement): ForumLinkParams {
+  const params = new URL(prependBaseUrl(link.getAttribute('href')!))
+    .searchParams;
 
   return { f: parseInt(params.get('f')!) };
 };
@@ -51,14 +52,18 @@ export const homeScraper = (document: Document): GroupItem[] => {
         const forumItems = forums
           .filter((forumEl, i) => forumEl.children.length >= 2 && i % 2 == 0)
           .map<ForumItem>((forumEl) => {
-            const linkParams = getParams(forumEl);
-            const title = forumEl.querySelector('.forumlink')!.innerHTML;
+            const link = forumEl.querySelector<HTMLAnchorElement>('.forumlink');
+
+            const linkParams = getParams(link!);
+            const title = link!.innerHTML;
             const description = forumEl.querySelector('.forumdesc')!.innerHTML;
+            const hasUnread = link?.classList.contains('link-new');
 
             return {
               title: he.decode(title),
               description,
               linkParams,
+              hasUnread,
             };
           });
 
