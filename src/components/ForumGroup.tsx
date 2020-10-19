@@ -43,4 +43,4 @@ const ForumGroup = ({ item }: Props) => {
   );
 };
 
-export default ForumGroup;
+export default React.memo(ForumGroup);
