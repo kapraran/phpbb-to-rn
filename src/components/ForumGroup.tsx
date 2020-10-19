@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
-import { List } from 'react-native-paper';
+import React from 'react';
+import { List, Colors } from 'react-native-paper';
 import { firstLetterUpper } from '../utils/utils';
-import { ForumItem, GroupItem } from '../api/scrapers/home';
+import { ForumItem, ForumLinkParams, GroupItem } from '../api/scrapers/home';
 import { useNavigation } from '@react-navigation/native';
 
 interface Props {
@@ -12,18 +12,13 @@ const ForumGroup = ({ item }: Props) => {
   const { name, forums } = item;
   const navigation = useNavigation();
 
-  const openForum = useCallback(
-    (forum: ForumItem, name: string) => {
-      const { title, linkParams } = forum;
-
-      navigation.navigate('ViewForum', {
-        title: title,
-        groupName: firstLetterUpper(name),
-        params: linkParams,
-      });
-    },
-    [forums, name],
-  );
+  const openForum = ({ title, linkParams }: ForumItem) => {
+    navigation.navigate('ViewForum', {
+      title: title,
+      groupName: firstLetterUpper(name),
+      params: linkParams,
+    });
+  };
 
   return (
     <List.Section>
@@ -34,8 +29,14 @@ const ForumGroup = ({ item }: Props) => {
           title={forum.title}
           description={forum.description}
           descriptionNumberOfLines={3}
-          left={(props) => <List.Icon {...props} icon="folder" />}
-          onPress={() => openForum(forum, name)}
+          left={(props) => (
+            <List.Icon
+              {...props}
+              icon="folder"
+              color={forum.hasUnread ? Colors.green700 : Colors.grey600}
+            />
+          )}
+          onPress={() => openForum(forum)}
         />
       ))}
     </List.Section>

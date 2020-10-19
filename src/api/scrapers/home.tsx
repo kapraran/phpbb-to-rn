@@ -57,7 +57,7 @@ export const homeScraper = (document: Document): GroupItem[] => {
             const linkParams = getParams(link!);
             const title = link!.innerHTML;
             const description = forumEl.querySelector('.forumdesc')!.innerHTML;
-            const hasUnread = link?.classList.contains('link-new');
+            const hasUnread = link?.className.indexOf('link-new') != -1;
 
             return {
               title: he.decode(title),
