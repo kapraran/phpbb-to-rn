@@ -1,0 +1,28 @@
+name: Build Android App
+
+on:
+  push:
+    branches:
+      - kapraran-patch-1
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          yarn
+      - name: Setup keystore
+        run: |
+          echo $SIGNING_KEY | base64 -di > ./android/app/my-upload-key.keystore
+        env:
+          SIGNING_KEY: ${{ secrets.KEYSTORE_64 }}
+      - name: Build Android Release
+        run: |
+          cd android && ./gradlew assembleRelease -PMYAPP_UPLOAD_STORE_PASSWORD='${{ secrets.KEY_PASSWORD }}' -PMYAPP_UPLOAD_KEY_PASSWORD='${{ secrets.ALIAS_PASSWORD }}'
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: app-release.apk
+          path: android/app/build/outputs/apk/release/
+  
