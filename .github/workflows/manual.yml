@@ -12,6 +12,9 @@ jobs:
       - name: Install dependencies
         run: |
           yarn
+      - name: Install NDK
+        run: |
+          echo "y" | sudo /usr/local/lib/android/sdk/tools/bin/sdkmanager --install "ndk;21.0.6113669" --sdk_root=${ANDROID_SDK_ROOT}
       - name: Setup keystore
         run: |
           echo $SIGNING_KEY | base64 -di > ./android/app/my-upload-key.keystore
