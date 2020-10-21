@@ -1,8 +1,0 @@
-name: learn-github-actions
-on: [push]
-jobs:
-  check-bats-version:
-    runs-on: ubuntu-latest
-    steps:
-      - name: React Native Android Build APK
-        uses: realabbas/Github-Actions-React-Native@v1.1.2
