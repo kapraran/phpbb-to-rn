@@ -3,7 +3,7 @@ name: Build Android App
 on:
   push:
     branches:
-      - kapraran-patch-1
+      - master
 jobs:
   build-android:
     runs-on: ubuntu-latest
