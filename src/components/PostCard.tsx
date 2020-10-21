@@ -9,11 +9,24 @@ interface Props {
   post: PostData;
 }
 
+const styles = (isUnread: boolean) => StyleSheet.create({
+  container: {
+    elevation: 2,
+    marginHorizontal: 8,
+    marginVertical: 6,
+    borderRadius: 4,
+    backgroundColor: isUnread ? Colors.yellow100: Colors.white,
+  },
+  content: {
+    padding: 16,
+  },
+});
+
 const PostCard = ({ post }: Props) => {
   const { user, date, content } = post;
 
   return (
-    <View style={styles.container}>
+    <View style={styles(post.hasUnreadAnchor).container}>
       <PostCardHeader user={user} date={date} />
       <View>
         <RenderHtml html={content} />
@@ -21,18 +34,5 @@ const PostCard = ({ post }: Props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    elevation: 2,
-    marginHorizontal: 8,
-    marginVertical: 6,
-    borderRadius: 4,
-    backgroundColor: Colors.white,
-  },
-  content: {
-    padding: 16,
-  },
-});
 
 export default PostCard;
