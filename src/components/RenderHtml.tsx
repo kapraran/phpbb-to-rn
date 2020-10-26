@@ -9,6 +9,7 @@ import {
 } from 'react-native-paper';
 import { parseHTML } from '../utils/utils';
 import Image from 'react-native-scalable-image';
+import StrongText from './StrongText';
 
 interface Props {
   html: string;
@@ -28,7 +29,7 @@ const renderQuote = (
     <View style={styles.quote} key={prefixKey + index}>
       <Caption style={styles.quoteHeader}>{username}</Caption>
       <View style={styles.quoteContent}>
-        {renderNodes(
+        {renderManyNodes(
           Array.from(quote.children[1].childNodes),
           prefixKey + index + 'q',
           widthModifier,
@@ -125,11 +126,7 @@ const renderElement = (
       );
     case 'STRONG':
     case 'SPAN':
-      return (
-        <Text key={key} style={{ fontWeight: '700', fontSize: 18 }}>
-          {element.textContent?.trim()}
-        </Text>
-      );
+      return <StrongText key={key} text={element.textContent?.trim()!} />;
     case 'IMG':
       return renderImage(element as HTMLImageElement, key, maxWidth);
     default:
@@ -137,7 +134,7 @@ const renderElement = (
   }
 };
 
-const renderNode = (
+const renderSingleNode = (
   node: ChildNode,
   index: number,
   prefixKey: string,
@@ -153,13 +150,13 @@ const renderNode = (
   }
 };
 
-const renderNodes = (
+const renderManyNodes = (
   nodes: ChildNode[],
   prefixKey: string,
   maxWidth: number,
 ) => {
   return nodes.map((node, index) =>
-    renderNode(node, index, prefixKey, maxWidth),
+    renderSingleNode(node, index, prefixKey, maxWidth),
   );
 };
 
@@ -183,7 +180,7 @@ const RenderHtml = (props: Props) => {
 
   return (
     <View style={styles.container}>
-      <View>{renderNodes(nodes, ':', maxWidth)}</View>
+      <View>{renderManyNodes(nodes, ':', maxWidth)}</View>
     </View>
   );
 };
