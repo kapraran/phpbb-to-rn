@@ -12,7 +12,7 @@ interface NFButtonProps {
 }
 
 interface Props {
-  ref: FlatList;
+  listRef: FlatList | null;
   pagination: PaginationData;
   onPageChange: (start: number) => void;
 }
@@ -29,7 +29,17 @@ const NFButton = ({ iconName, onPress }: NFButtonProps) => {
   );
 };
 
-const NavigationFooter = ({ ref, pagination, onPageChange }: Props) => {
+const styles = StyleSheet.create({
+  footerNav: {
+    flexDirection: 'row',
+    marginBottom: 8,
+    marginHorizontal: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+const NavigationFooter = ({ listRef, pagination, onPageChange }: Props) => {
   const { current, max } = pagination;
   const navigation = useNavigation();
 
@@ -37,8 +47,11 @@ const NavigationFooter = ({ ref, pagination, onPageChange }: Props) => {
     navigation,
   ]);
   const moveToTop = useCallback(
-    () => ref.scrollToOffset({ animated: true, offset: 0 }),
-    [ref],
+    () =>
+      listRef !== null
+        ? listRef.scrollToOffset({ animated: true, offset: 0 })
+        : null,
+    [listRef],
   );
 
   return (
@@ -54,15 +67,5 @@ const NavigationFooter = ({ ref, pagination, onPageChange }: Props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  footerNav: {
-    flexDirection: 'row',
-    marginBottom: 8,
-    marginHorizontal: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default NavigationFooter;

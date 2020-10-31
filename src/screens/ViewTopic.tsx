@@ -12,6 +12,7 @@ import { getViewTopicPosts } from '../api/api';
 import { PaginationData } from '../api/scrapers/pagination';
 import { TopicLinkParams } from '../api/scrapers/viewforum';
 import PostItem from '../components/PostItem';
+import NavigationFooter from '../components/NavigationFooter';
 
 type ViewTopicNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -32,6 +33,8 @@ const renderHeader = ({
 );
 
 const renderEmpty = () => <SpinnerView />;
+
+let flatListRef: FlatList<PostData> | null = null;
 
 const ViewTopic = ({ navigation, route }: Props) => {
   const [posts, setPosts] = useState<PostData[]>([]);
@@ -92,10 +95,11 @@ const ViewTopic = ({ navigation, route }: Props) => {
           }}>
           Απαντηση
         </Button>
-        <Pagination
-          current={pagination.current}
-          max={pagination.max}
-          onPageChange={onPageChange}></Pagination>
+        <NavigationFooter
+          listRef={flatListRef}
+          pagination={pagination}
+          onPageChange={onPageChange}
+        />
       </View>
     ) : null;
 
@@ -110,6 +114,7 @@ const ViewTopic = ({ navigation, route }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
+        ref={(ref) => (flatListRef = ref)}
         data={posts}
         renderItem={renderItem}
         ListHeaderComponent={() => renderHeader(route.params)}
