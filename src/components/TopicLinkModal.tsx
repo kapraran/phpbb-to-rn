@@ -14,11 +14,13 @@ interface Props {
 const styles = StyleSheet.create({
   modal: {
     backgroundColor: '#fff',
-    margin: 32,
+    marginHorizontal: 16,
     borderRadius: 4,
+    elevation: 8,
   },
   menuItem: {
     maxWidth: 'auto',
+    paddingVertical: 16,
   },
 });
 
@@ -77,19 +79,19 @@ const TopicLinkModal = (props: Props) => {
         <Menu.Item
           icon="comment-multiple"
           onPress={goToLastUnread}
-          title="Last unread"
+          title="Πρώτη αδιάβαστη σελίδα"
           style={styles.menuItem}
         />
         <Menu.Item
           icon="page-first"
           onPress={goToFirstPage}
-          title="First page"
+          title="Πρώτη σελίδα"
           style={styles.menuItem}
         />
         <Menu.Item
           icon="page-last"
           onPress={goToLastPage}
-          title="Last page"
+          title="Τελευταία σελίδα"
           style={styles.menuItem}
         />
       </Modal>

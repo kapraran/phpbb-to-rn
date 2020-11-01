@@ -10,6 +10,7 @@ import {
 import { parseHTML } from '../utils/utils';
 import Image from 'react-native-scalable-image';
 import StrongText from './StrongText';
+import AnchorText from './AnchorText';
 
 interface Props {
   html: string;
@@ -110,20 +111,9 @@ const renderElement = (
     case 'BR':
       return <View key={key} style={{ height: 8 }} />;
     case 'A':
-      const text = element.textContent;
-      const href = (element as HTMLAnchorElement).getAttribute('href');
-      return (
-        <Text
-          key={key}
-          onPress={() => {
-            Linking.canOpenURL(href!).then((supported) =>
-              supported ? Linking.openURL(href!) : null,
-            );
-          }}
-          style={styles.anchor}>
-          {text}
-        </Text>
-      );
+      const text = element.textContent!;
+      const href = (element as HTMLAnchorElement).getAttribute('href')!;
+      return <AnchorText key={key} text={text} href={href} />;
     case 'STRONG':
     case 'SPAN':
       return <StrongText key={key} text={element.textContent?.trim()!} />;
