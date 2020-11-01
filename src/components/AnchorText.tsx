@@ -31,7 +31,27 @@ const AnchorText = ({ text, href }: Props) => {
         style={styles.anchor}>
         {text}
       </Text>
-      <RNUrlPreview text={href} />
+      <RNUrlPreview
+        text={href}
+        titleStyle={{
+          fontSize: 14,
+        }}
+        descriptionStyle={{
+          fontSize: 12,
+          color: Colors.grey500,
+        }}
+        containerStyle={{
+          backgroundColor: 'transparent',
+          alignItems: 'center',
+        }}
+        imageStyle={{
+          width: 80,
+          height: 80,
+        }}
+        imageProps={{
+          resizeMode: 'cover',
+        }}
+      />
     </View>
   );
 };

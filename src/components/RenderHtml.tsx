@@ -11,6 +11,7 @@ import { parseHTML } from '../utils/utils';
 import Image from 'react-native-scalable-image';
 import StrongText from './StrongText';
 import AnchorText from './AnchorText';
+import YoutubeIframe from './YoutubeIframe';
 
 interface Props {
   html: string;
@@ -110,15 +111,24 @@ const renderElement = (
       return renderNone(key);
     case 'BR':
       return <View key={key} style={{ height: 8 }} />;
+
+    case 'IFRAME':
+      const iframe = element as HTMLIFrameElement;
+      const src = iframe.src;
+      if (src.includes('youtube.com'))
+        return <YoutubeIframe key={key} element={iframe} />;
+
     case 'A':
       const text = element.textContent!;
       const href = (element as HTMLAnchorElement).getAttribute('href')!;
-      return <AnchorText key={key} text={text} href={href} />;
+      return <AnchorText key={key} text={text} href={`https:${href}`} />;
+
     case 'STRONG':
     case 'SPAN':
       return <StrongText key={key} text={element.textContent?.trim()!} />;
     case 'IMG':
       return renderImage(element as HTMLImageElement, key, maxWidth);
+
     default:
       return renderNone(key);
   }
