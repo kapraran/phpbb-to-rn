@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { Text, Paragraph } from 'react-native-paper';
+import { Paragraph } from 'react-native-paper';
 import { parseHTML } from '../utils/utils';
 
 import AnchorElement from './html/AnchorElement';
@@ -8,6 +8,8 @@ import CodeElement from './html/CodeElement';
 import ImageElement from './html/ImageElement';
 import NoneElement from './html/NoneElement';
 import QuoteElement from './html/QuoteElement';
+import StrongElement from './html/StrongElement';
+import YoutubeElement from './html/YoutubeElement';
 
 interface Props {
   html: string;
@@ -63,6 +65,13 @@ const renderElement = (
       return <NoneElement key={key} />;
     case 'BR':
       return <View key={key} style={{ height: 8 }} />;
+
+    case 'IFRAME':
+      const iframe = element as HTMLIFrameElement;
+      const src = iframe.src;
+      if (src.includes('youtube.com'))
+        return <YoutubeElement key={key} uri={(iframe as HTMLIFrameElement).src} />;
+
     case 'A':
       return (
         <AnchorElement
@@ -73,11 +82,7 @@ const renderElement = (
       );
     case 'STRONG':
     case 'SPAN':
-      return (
-        <Text key={key} style={{ fontWeight: '700', fontSize: 18 }}>
-          {element.textContent?.trim()}
-        </Text>
-      );
+      return <StrongElement key={key} text={element.textContent?.trim()!} />;
     case 'IMG':
       return (
         <ImageElement
@@ -91,7 +96,7 @@ const renderElement = (
   }
 };
 
-const renderNode = (
+const renderSingleNode = (
   node: ChildNode,
   index: number,
   prefixKey: string,
@@ -113,7 +118,7 @@ const renderNodeList = (
   maxWidth: number,
 ) => {
   return nodes.map((node, index) =>
-    renderNode(node, index, prefixKey, maxWidth),
+    renderSingleNode(node, index, prefixKey, maxWidth),
   );
 };
 

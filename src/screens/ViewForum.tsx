@@ -9,11 +9,10 @@ import { getViewForumTopics } from '../api/api';
 import { TopicLinkData } from '../api/scrapers/viewforum';
 import { List, Colors, Button } from 'react-native-paper';
 import { firstLetterUpper } from '../utils/utils';
-import Pagination from '../components/Pagination';
 import TopicLinkModal from '../components/TopicLinkModal';
 import { PaginationData } from '../api/scrapers/pagination';
 import { ForumLinkParams } from '../api/scrapers/home';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import NavigationFooter from '../components/NavigationFooter';
 
 type ViewForumNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -30,8 +29,9 @@ const renderSeparator = () => <View style={styles.separator} />;
 
 const ViewForum = ({ navigation, route }: Props) => {
   const [topics, setTopics] = useState<TopicLinkData[]>([]);
-  const [visible, setVisible] = React.useState(false);
-  const [pagination, setPagination] = React.useState<PaginationData>({
+  const [visible, setVisible] = useState(false);
+  const [pressedLinkData, setPressedLinkData] = useState<TopicLinkData>();
+  const [pagination, setPagination] = useState<PaginationData>({
     current: 1,
     max: 1,
   });
@@ -81,6 +81,7 @@ const ViewForum = ({ navigation, route }: Props) => {
         });
       }}
       onLongPress={() => {
+        setPressedLinkData(item);
         setVisible(true);
       }}
     />
@@ -106,32 +107,16 @@ const ViewForum = ({ navigation, route }: Props) => {
   const renderFooter = () =>
     topics.length > 0 ? (
       <View>
+        <NavigationFooter
+          listRef={flatListRef}
+          pagination={pagination}
+          onPageChange={onPageChange}
+        />
         <TopicLinkModal
           visible={visible}
+          forumName={route.params.title}
+          topicLinkData={pressedLinkData!}
           onDismiss={() => setVisible(false)}></TopicLinkModal>
-        <Pagination
-          current={pagination.current}
-          max={pagination.max}
-          onPageChange={onPageChange}></Pagination>
-        <View style={styles.footerNav}>
-          <Button
-            mode="outlined"
-            color={Colors.green700}
-            contentStyle={{ flex: 1 }}
-            onPress={() => {
-              navigation.navigate('Home');
-            }}>
-            <Icon name="home" size={20} color={Colors.green700} />
-          </Button>
-          <Button
-            mode="outlined"
-            color={Colors.green700}
-            onPress={() =>
-              flatListRef?.scrollToOffset({ animated: true, offset: 0 })
-            }>
-            <Icon name="arrow-upward" size={20} color={Colors.green700} />
-          </Button>
-        </View>
       </View>
     ) : null;
 
