@@ -9,6 +9,7 @@ import {
 } from 'react-native-paper';
 import { parseHTML } from '../utils/utils';
 import Image from 'react-native-scalable-image';
+import AnchorElement from './html/AnchorElement';
 
 interface Props {
   html: string;
@@ -109,19 +110,12 @@ const renderElement = (
     case 'BR':
       return <View key={key} style={{ height: 8 }} />;
     case 'A':
-      const text = element.textContent;
-      const href = (element as HTMLAnchorElement).getAttribute('href');
       return (
-        <Text
+        <AnchorElement
           key={key}
-          onPress={() => {
-            Linking.canOpenURL(href!).then((supported) =>
-              supported ? Linking.openURL(href!) : null,
-            );
-          }}
-          style={styles.anchor}>
-          {text}
-        </Text>
+          text={element.textContent}
+          href={(element as HTMLAnchorElement).getAttribute('href')}
+        />
       );
     case 'STRONG':
     case 'SPAN':

@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   userContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   username: {
     marginLeft: 8,
@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 12,
-    color: Colors.grey600
-  }
+    color: Colors.grey600,
+  },
 });
 
 export default React.memo(PostCardHeader);

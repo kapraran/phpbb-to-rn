@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, Colors } from 'react-native-paper';
 import { firstLetterUpper } from '../utils/utils';
-import { ForumItem, ForumLinkParams, GroupItem } from '../api/scrapers/home';
+import { ForumItem, GroupItem } from '../api/scrapers/home';
 import { useNavigation } from '@react-navigation/native';
 
 interface Props {
