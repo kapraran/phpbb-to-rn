@@ -6,7 +6,6 @@ import SpinnerView from '../components/SpinnerView';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigator';
-import Pagination from '../components/Pagination';
 import { PostData } from '../api/scrapers/viewtopic';
 import { getViewTopicPosts } from '../api/api';
 import { PaginationData } from '../api/scrapers/pagination';
@@ -24,6 +23,12 @@ type Props = {
   navigation: ViewTopicNavigationProp;
   route: ViewTopicRouteProp;
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+  },
+});
 
 const renderHeader = ({
   title,
@@ -124,24 +129,12 @@ const ViewTopic = ({ navigation, route }: Props) => {
           createKey(user.username, content, index)
         }
         stickyHeaderIndices={[0]}
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
+        contentContainerStyle={styles.container}
         refreshing={false}
         onRefresh={onRefresh}
-        initialNumToRender={4}
-        maxToRenderPerBatch={2}
-        updateCellsBatchingPeriod={50}
-        windowSize={7}
       />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-  },
-});
 
 export default ViewTopic;

@@ -2,6 +2,8 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Colors } from 'react-native-paper';
 import AnchorElement from './AnchorElement';
+
+// @ts-ignore
 import RNUrlPreview from 'react-native-url-preview';
 
 interface Props {
@@ -29,9 +31,9 @@ const styles = StyleSheet.create({
 const getVideoId = (uri: string) => {
   const matches = uri.match(/(.*\?.*v\=([^&]*).*)|(.*embed\/(.*))/);
 
-  if (matches === null) return null
+  if (matches === null) return null;
 
-  return matches.filter(x => x !== undefined).pop()
+  return matches.filter((x) => x !== undefined).pop();
 };
 
 const YoutubeElement = ({ uri }: Props) => {

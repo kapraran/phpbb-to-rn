@@ -1,3 +1,3 @@
-# phpbb-to-react
+# phpbb-to-rn
 
-From an Old school phpbb forum to a react-native app
+A React Native app that scrapes and displays data from an old-school phpbb forum
