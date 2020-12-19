@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { Text, Colors, Paragraph } from 'react-native-paper';
+import { Text, Paragraph } from 'react-native-paper';
 import { parseHTML } from '../utils/utils';
+
 import AnchorElement from './html/AnchorElement';
+import CodeElement from './html/CodeElement';
 import ImageElement from './html/ImageElement';
+import NoneElement from './html/NoneElement';
 import QuoteElement from './html/QuoteElement';
 
 interface Props {
   html: string;
 }
-
-const renderNone = (key: string) => <View key={key} style={styles.none}></View>;
 
 const renderQuote = (
   quote: HTMLElement,
@@ -27,29 +28,12 @@ const renderQuote = (
 
   return (
     <QuoteElement key={key} username={username}>
-      {renderNodes(
+      {renderNodeList(
         Array.from(quote.children[1].childNodes),
         `${key}:q`,
         widthModifier,
       )}
     </QuoteElement>
-  );
-};
-
-const renderCode = (element: HTMLDivElement, key: string) => {
-  const content = element.querySelector('.codecontent')!.textContent!.trim();
-
-  return (
-    <Paragraph
-      key={key}
-      style={{
-        fontFamily: 'monospace',
-        backgroundColor: Colors.green50,
-        padding: 16,
-        borderRadius: 4,
-      }}>
-      {content}
-    </Paragraph>
   );
 };
 
@@ -70,10 +54,13 @@ const renderElement = (
       }
 
       if (element.className == 'codewrapper') {
-        return renderCode(element as HTMLDivElement, key);
+        const content = element
+          .querySelector('.codecontent')!
+          .textContent!.trim();
+        return <CodeElement key={key} content={content} />;
       }
 
-      return renderNone(key);
+      return <NoneElement key={key} />;
     case 'BR':
       return <View key={key} style={{ height: 8 }} />;
     case 'A':
@@ -100,7 +87,7 @@ const renderElement = (
         />
       );
     default:
-      return renderNone(key);
+      return <NoneElement key={key} />;
   }
 };
 
@@ -120,7 +107,7 @@ const renderNode = (
   }
 };
 
-const renderNodes = (
+const renderNodeList = (
   nodes: ChildNode[],
   prefixKey: string,
   maxWidth: number,
@@ -130,8 +117,16 @@ const renderNodes = (
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+});
+
 const RenderHtml = (props: Props) => {
   const [nodes, setNodes] = useState<ChildNode[]>([]);
+  const maxWidth = Dimensions.get('window').width - 76;
 
   useEffect(() => {
     let mounted = true;
@@ -146,21 +141,11 @@ const RenderHtml = (props: Props) => {
     };
   });
 
-  const maxWidth = Dimensions.get('window').width - 76;
-
   return (
     <View style={styles.container}>
-      <View>{renderNodes(nodes, ':', maxWidth)}</View>
+      <View>{renderNodeList(nodes, 'root:', maxWidth)}</View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  none: { height: 8, backgroundColor: Colors.orange400 },
-});
 
 export default RenderHtml;
