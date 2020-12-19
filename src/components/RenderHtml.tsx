@@ -75,12 +75,11 @@ const renderElement = (
         );
 
     case 'A':
-      return (
-        <AnchorElement
-          key={key}
-          text={element.textContent}
-          href={(element as HTMLAnchorElement).getAttribute('href')}
-        />
+      const href = (element as HTMLAnchorElement).getAttribute('href')!;
+      return href.includes('youtube.com') ? (
+        <YoutubeElement key={key} uri={href} />
+      ) : (
+        <AnchorElement key={key} text={element.textContent} href={href} />
       );
     case 'STRONG':
     case 'SPAN':

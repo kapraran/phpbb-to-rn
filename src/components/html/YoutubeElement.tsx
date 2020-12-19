@@ -23,12 +23,15 @@ const styles = StyleSheet.create({
   image: {
     width: 80,
     height: 80,
-  }
+  },
 });
 
 const getVideoId = (uri: string) => {
   const matches = uri.match(/(.*\?.*v\=([^&]*).*)|(.*embed\/(.*))/);
-  return matches !== null ? (matches.pop() as string) : null;
+
+  if (matches === null) return null
+
+  return matches.filter(x => x !== undefined).pop()
 };
 
 const YoutubeElement = ({ uri }: Props) => {
