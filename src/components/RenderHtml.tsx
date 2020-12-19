@@ -70,7 +70,9 @@ const renderElement = (
       const iframe = element as HTMLIFrameElement;
       const src = iframe.src;
       if (src.includes('youtube.com'))
-        return <YoutubeElement key={key} uri={(iframe as HTMLIFrameElement).src} />;
+        return (
+          <YoutubeElement key={key} uri={(iframe as HTMLIFrameElement).src} />
+        );
 
     case 'A':
       return (
