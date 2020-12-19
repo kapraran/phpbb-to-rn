@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Linking, Dimensions } from 'react-native';
-import {
-  Text,
-  Colors,
-  Caption,
-  Paragraph,
-  IconButton,
-} from 'react-native-paper';
+import { View, StyleSheet, Dimensions } from 'react-native';
+import { Text, Colors, Caption, Paragraph } from 'react-native-paper';
 import { parseHTML } from '../utils/utils';
-import Image from 'react-native-scalable-image';
 import AnchorElement from './html/AnchorElement';
+import ImageElement from './html/ImageElement';
 
 interface Props {
   html: string;
@@ -35,36 +29,6 @@ const renderQuote = (
           widthModifier,
         )}
       </View>
-    </View>
-  );
-};
-
-const renderImage = (img: HTMLImageElement, key: string, maxWidth: number) => {
-  const uri = img.src;
-
-  if (uri.startsWith('/images/smilies/')) {
-    return <Text key={key}>☘️</Text>;
-  }
-
-  return (
-    <View
-      key={key}
-      style={{
-        alignItems: 'flex-start',
-      }}>
-      <Image width={maxWidth} source={{ uri }}></Image>
-      <IconButton
-        icon="open-in-new"
-        style={{
-          marginTop: -28,
-        }}
-        onPress={() =>
-          Linking.canOpenURL(uri).then((supported) =>
-            supported ? Linking.openURL(uri) : null,
-          )
-        }
-        color={Colors.white}
-        size={16}></IconButton>
     </View>
   );
 };
@@ -125,7 +89,13 @@ const renderElement = (
         </Text>
       );
     case 'IMG':
-      return renderImage(element as HTMLImageElement, key, maxWidth);
+      return (
+        <ImageElement
+          key={key}
+          uri={(element as HTMLImageElement).src}
+          maxWidth={maxWidth}
+        />
+      );
     default:
       return renderNone(key);
   }
@@ -201,10 +171,6 @@ const styles = StyleSheet.create({
   },
   quoteContent: {
     padding: 16,
-  },
-  anchor: {
-    color: Colors.green500,
-    textDecorationLine: 'underline',
   },
   none: { height: 8, backgroundColor: Colors.orange400 },
 });
