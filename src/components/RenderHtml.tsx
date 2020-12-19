@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { Text, Colors, Caption, Paragraph } from 'react-native-paper';
+import { Text, Colors, Paragraph } from 'react-native-paper';
 import { parseHTML } from '../utils/utils';
 import AnchorElement from './html/AnchorElement';
 import ImageElement from './html/ImageElement';
+import QuoteElement from './html/QuoteElement';
 
 interface Props {
   html: string;
@@ -17,19 +18,21 @@ const renderQuote = (
   prefixKey: string,
   widthModifier: number,
 ) => {
-  const username = quote.children[0].innerHTML.split(' ')[0].trim();
+  const key = prefixKey + index;
+  const username = quote.children[0].innerHTML
+    .split(' ')
+    .slice(0, -1)
+    .join(' ')
+    .trim();
 
   return (
-    <View style={styles.quote} key={prefixKey + index}>
-      <Caption style={styles.quoteHeader}>{username}</Caption>
-      <View style={styles.quoteContent}>
-        {renderNodes(
-          Array.from(quote.children[1].childNodes),
-          prefixKey + index + 'q',
-          widthModifier,
-        )}
-      </View>
-    </View>
+    <QuoteElement key={key} username={username}>
+      {renderNodes(
+        Array.from(quote.children[1].childNodes),
+        `${key}:q`,
+        widthModifier,
+      )}
+    </QuoteElement>
   );
 };
 
@@ -155,21 +158,6 @@ const RenderHtml = (props: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-  },
-  quote: {
-    borderWidth: 1,
-    borderColor: Colors.grey300,
-    borderRadius: 4,
-    backgroundColor: Colors.grey100,
-  },
-  quoteHeader: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderBottomColor: Colors.grey200,
-    borderBottomWidth: 1,
-  },
-  quoteContent: {
     padding: 16,
   },
   none: { height: 8, backgroundColor: Colors.orange400 },
