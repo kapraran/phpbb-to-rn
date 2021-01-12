@@ -24,8 +24,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const TopicLinkModal = (props: Props) => {
-  const { visible, forumName, topicLinkData, onDismiss } = props;
+const TopicLinkModal = ({
+  visible,
+  forumName,
+  topicLinkData,
+  onDismiss,
+}: Props) => {
   const navigation = useNavigation();
 
   const goToTopic = (params: TopicLinkParams) => {
@@ -99,4 +103,4 @@ const TopicLinkModal = (props: Props) => {
   );
 };
 
-export default TopicLinkModal;
+export default React.memo(TopicLinkModal);

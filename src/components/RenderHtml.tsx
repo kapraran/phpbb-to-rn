@@ -149,7 +149,7 @@ const RenderHtml = (props: Props) => {
 
   return (
     <View style={styles.container}>
-      <View>{renderNodeList(nodes, 'root:', maxWidth)}</View>
+      {renderNodeList(nodes, 'root:', maxWidth)}
     </View>
   );
 };

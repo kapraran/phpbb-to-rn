@@ -39,8 +39,6 @@ const renderHeader = ({
 
 const renderEmpty = () => <SpinnerView />;
 
-let flatListRef: FlatList<PostData> | null = null;
-
 const ViewTopic = ({ navigation, route }: Props) => {
   const [posts, setPosts] = useState<PostData[]>([]);
   const [unreadIndex, setUnreadIndex] = useState(0);
@@ -48,6 +46,13 @@ const ViewTopic = ({ navigation, route }: Props) => {
     current: 1,
     max: 1,
   });
+  const flatListRef = React.useRef<FlatList>(null);
+
+  const delayedScrollToIndex = (index: number, delay = 100) => {
+    setTimeout(() => {
+      flatListRef.current!.scrollToIndex({ animated: true, index });
+    }, delay);
+  };
 
   const fetchPosts = (params: TopicLinkParams) => {
     setPosts([]);
@@ -58,6 +63,9 @@ const ViewTopic = ({ navigation, route }: Props) => {
 
       const index = posts.findIndex((post) => post.hasUnreadAnchor);
       setUnreadIndex(index < 0 ? 0 : index);
+
+      // move to first unread post
+      if (index > 0) delayedScrollToIndex(index, 50);
     });
   };
 
@@ -101,7 +109,7 @@ const ViewTopic = ({ navigation, route }: Props) => {
           Απαντηση
         </Button>
         <NavigationFooter
-          listRef={flatListRef}
+          listRef={flatListRef.current}
           pagination={pagination}
           onPageChange={onPageChange}
         />
@@ -116,14 +124,28 @@ const ViewTopic = ({ navigation, route }: Props) => {
     )}`;
   };
 
+  const onScrollToIndexFailed = ({
+    index,
+    averageItemLength,
+  }: {
+    index: number;
+    averageItemLength: number;
+  }) => {
+    flatListRef.current?.scrollToOffset({
+      animated: false,
+      offset: index * averageItemLength,
+    });
+    delayedScrollToIndex(index, 100);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        ref={(ref) => (flatListRef = ref)}
+        ref={flatListRef}
         data={posts}
         renderItem={renderItem}
-        ListHeaderComponent={() => renderHeader(route.params)}
         ListEmptyComponent={renderEmpty}
+        ListHeaderComponent={() => renderHeader(route.params)}
         ListFooterComponent={renderFooter}
         keyExtractor={({ user, content }, index) =>
           createKey(user.username, content, index)
@@ -132,6 +154,7 @@ const ViewTopic = ({ navigation, route }: Props) => {
         contentContainerStyle={styles.container}
         refreshing={false}
         onRefresh={onRefresh}
+        onScrollToIndexFailed={onScrollToIndexFailed}
       />
     </SafeAreaView>
   );
