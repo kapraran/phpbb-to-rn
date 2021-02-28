@@ -11,24 +11,25 @@ interface Props {
   uri: string;
 }
 
-const styles = (dark: boolean) => StyleSheet.create({
-  container: {
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 14,
-    color: dark ? Colors.white : Colors.black
-  },
-  description: {
-    fontSize: 12,
-    color: Colors.grey500,
-  },
-  image: {
-    width: 80,
-    height: 80,
-  },
-});
+const styles = (dark: boolean) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: 'transparent',
+      alignItems: 'center',
+    },
+    title: {
+      fontSize: 14,
+      color: dark ? Colors.white : Colors.black,
+    },
+    description: {
+      fontSize: 12,
+      color: Colors.grey500,
+    },
+    image: {
+      width: 80,
+      height: 80,
+    },
+  });
 
 const getVideoId = (uri: string) => {
   const matches = uri.match(/(.*\?.*v\=([^&]*).*)|(.*embed\/(.*))/);
@@ -38,7 +39,7 @@ const getVideoId = (uri: string) => {
   return matches.filter((x) => x !== undefined).pop();
 };
 
-const YoutubeElement = ({ uri, theme }: Props) => {
+const YoutubeElement: React.FC<Props> = ({ uri, theme }) => {
   const id = getVideoId(uri);
 
   // check if valid id
@@ -62,4 +63,4 @@ const YoutubeElement = ({ uri, theme }: Props) => {
   );
 };
 
-export default withTheme(YoutubeElement);
+export default React.memo(withTheme(YoutubeElement));

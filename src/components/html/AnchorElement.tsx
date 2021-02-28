@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const AnchorElement = ({ text, href }: Props) => {
+const AnchorElement: React.FC<Props> = ({ text, href }) => {
   text = text === null ? href : text;
 
   return (

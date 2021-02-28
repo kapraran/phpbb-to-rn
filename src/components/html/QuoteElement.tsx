@@ -7,23 +7,24 @@ interface Props {
   username: string;
 }
 
-const styles = (dark: boolean) => StyleSheet.create({
-  quote: {
-    borderWidth: 1,
-    borderColor: dark ? Colors.grey700 : Colors.grey300,
-    borderRadius: 4,
-    backgroundColor: dark ? Colors.grey800 : Colors.grey100,
-  },
-  quoteHeader: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderBottomColor: dark ? Colors.grey700 : Colors.grey300,
-    borderBottomWidth: 1,
-  },
-  quoteContent: {
-    padding: 16,
-  },
-});
+const styles = (dark: boolean) =>
+  StyleSheet.create({
+    quote: {
+      borderWidth: 1,
+      borderColor: dark ? Colors.grey700 : Colors.grey300,
+      borderRadius: 4,
+      backgroundColor: dark ? Colors.grey800 : Colors.grey100,
+    },
+    quoteHeader: {
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      borderBottomColor: dark ? Colors.grey700 : Colors.grey300,
+      borderBottomWidth: 1,
+    },
+    quoteContent: {
+      padding: 16,
+    },
+  });
 
 const QuoteElement: React.FC<Props> = ({ username, children, theme }) => {
   return (
@@ -34,4 +35,4 @@ const QuoteElement: React.FC<Props> = ({ username, children, theme }) => {
   );
 };
 
-export default React.memo(withTheme(QuoteElement)) ;
+export default React.memo(withTheme(QuoteElement));

@@ -57,9 +57,10 @@ const Reply = ({ navigation, route, theme }: Props) => {
   };
 
   return (
-    <SafeAreaView style={{
-      backgroundColor: theme.dark ? Colors.black: Colors.white
-    }}>
+    <SafeAreaView
+      style={{
+        backgroundColor: theme.dark ? Colors.black : Colors.white,
+      }}>
       <AppHeader title="Απάντηση" subtitle={title} showBack={true} />
 
       <TextInput

@@ -17,7 +17,7 @@ const styles = (dark: boolean, isUnread: boolean) =>
       marginHorizontal: 8,
       marginVertical: 6,
       borderRadius: 4,
-      backgroundColor: dark ? '#212121': '#fff' // isUnread ? Colors.yellow100 : Colors.white,
+      backgroundColor: dark ? '#212121' : '#fff', // isUnread ? Colors.yellow100 : Colors.white,
     },
     content: {
       padding: 16,

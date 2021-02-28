@@ -13,9 +13,11 @@
     "build": "react-native run-android --variant=release"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
+    "@types/react-redux": "^7.1.16",
     "axios": "^0.21.1",
     "classlist": "^2.0.0",
     "dom-helpers": "^5.2.0",
@@ -36,6 +38,7 @@
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
+    "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.2.0"
   },

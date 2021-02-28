@@ -15,7 +15,7 @@ interface Props {
  */
 const isSmilie = (uri: string) => uri.startsWith('/images/smilies/');
 
-const ImageElement = ({ uri, maxWidth }: Props) => {
+const ImageElement: React.FC<Props> = ({ uri, maxWidth }) => {
   // placeholder for smilies
   if (isSmilie(uri)) return <Text>☘️</Text>;
 

@@ -14,7 +14,7 @@ interface Props {
 const timeAgo = (date: Date) =>
   DateTime.fromJSDate(date).setLocale('el').toRelativeCalendar();
 
-const PostCardHeader = ({ user, date, theme }: Props) => (
+const PostCardHeader: React.FC<Props> = ({ user, date, theme }) => (
   <View style={styles(theme.dark).header}>
     <View style={styles(theme.dark).userContainer}>
       <PostAvatar size={32} uri={user.avatarUrl} />
@@ -25,28 +25,29 @@ const PostCardHeader = ({ user, date, theme }: Props) => (
   </View>
 );
 
-const styles = (dark: boolean) => StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: dark ? Colors.grey800: Colors.grey100,
-  },
-  userContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  username: {
-    marginLeft: 8,
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  date: {
-    fontSize: 12,
-    color: Colors.grey600,
-  },
-});
+const styles = (dark: boolean) =>
+  StyleSheet.create({
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: dark ? Colors.grey800 : Colors.grey100,
+    },
+    userContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    username: {
+      marginLeft: 8,
+      fontSize: 16,
+      fontWeight: '500',
+    },
+    date: {
+      fontSize: 12,
+      color: Colors.grey600,
+    },
+  });
 
 export default React.memo(withTheme(PostCardHeader));

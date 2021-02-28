@@ -7,14 +7,15 @@ interface Props {
   content: string;
 }
 
-const styles = (dark: boolean) => StyleSheet.create({
-  code: {
-    fontFamily: 'monospace',
-    backgroundColor: dark ? Colors.grey700 : Colors.green50,
-    padding: 16,
-    borderRadius: 4,
-  },
-});
+const styles = (dark: boolean) =>
+  StyleSheet.create({
+    code: {
+      fontFamily: 'monospace',
+      backgroundColor: dark ? Colors.grey700 : Colors.green50,
+      padding: 16,
+      borderRadius: 4,
+    },
+  });
 
 const CodeElement = ({ content, theme }: Props) => (
   <Paragraph style={styles(theme.dark).code}>{content}</Paragraph>

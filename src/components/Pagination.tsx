@@ -10,7 +10,7 @@ interface Props {
   onPageChange: (start: number) => void;
 }
 
-const Pagination = ({ current, max, onPageChange }: Props) => {
+const Pagination: React.FC<Props> = ({ current, max, onPageChange }) => {
   const onPressFirst = () => {
     if (current == 1) return;
     onPageChange(0);

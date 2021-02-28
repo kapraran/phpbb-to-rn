@@ -1,8 +1,6 @@
-import { SET_DARK_THEME } from './settings.types';
+import { SET_DARK_MODE } from './settings.types';
 
-export const setDarkTheme = (enable: boolean) => {
-  return {
-    type: SET_DARK_THEME,
-    payload: enable,
-  };
-};
+export const setDarkMode = (enabled: boolean) => ({
+  type: SET_DARK_MODE,
+  payload: enabled,
+});

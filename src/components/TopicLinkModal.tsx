@@ -24,12 +24,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const TopicLinkModal = ({
+const TopicLinkModal: React.FC<Props> = ({
   visible,
   forumName,
   topicLinkData,
   onDismiss,
-}: Props) => {
+}) => {
   const navigation = useNavigation();
 
   const goToTopic = (params: TopicLinkParams) => {

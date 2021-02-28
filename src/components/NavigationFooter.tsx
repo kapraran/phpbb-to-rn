@@ -42,7 +42,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const NavigationFooter = ({ listRef, pagination, onPageChange }: Props) => {
+const NavigationFooter: React.FC<Props> = ({
+  listRef,
+  pagination,
+  onPageChange,
+}) => {
   const { current, max } = pagination;
   const navigation = useNavigation();
 

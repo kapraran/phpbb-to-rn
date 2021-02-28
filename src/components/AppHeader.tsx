@@ -6,17 +6,35 @@ interface Props {
   title: string;
   subtitle?: string;
   showBack?: boolean;
+  showSettings?: boolean;
 }
 
-const AppHeader = ({ title, subtitle, showBack = false }: Props) => {
+const AppHeader: React.FC<Props> = ({
+  title,
+  subtitle,
+  showBack = false,
+  showSettings = false,
+}) => {
   const navigation = useNavigation();
+
+  const goToSettings = () => {
+    navigation.navigate('Settings');
+  };
 
   return (
     <Appbar.Header>
+      {/* back icon */}
       {showBack ? (
         <Appbar.BackAction onPress={() => navigation.goBack()} />
       ) : null}
+
+      {/* content */}
       <Appbar.Content title={title} subtitle={subtitle} />
+
+      {/* actions */}
+      {showSettings ? (
+        <Appbar.Action icon="cog" onPress={goToSettings} />
+      ) : null}
     </Appbar.Header>
   );
 };

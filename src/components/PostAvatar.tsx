@@ -22,7 +22,7 @@ const styles = (size: number) =>
     },
   });
 
-const PostAvatar = ({ size, uri }: Props) => (
+const PostAvatar: React.FC<Props> = ({ size, uri }) => (
   <View style={styles(size).container}>
     {uri === null ? (
       <Avatar.Icon size={size} icon="account" />

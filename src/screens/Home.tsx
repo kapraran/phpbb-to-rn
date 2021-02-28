@@ -21,7 +21,9 @@ const renderItem = ({ item }: { item: GroupItem }) => (
   <ForumGroup item={item} />
 );
 
-const renderHeader = () => <AppHeader title="Panatha Forum" />;
+const renderHeader = () => (
+  <AppHeader title="Panatha Forum" showSettings={true} />
+);
 
 const renderEmpty = () => <SpinnerView />;
 

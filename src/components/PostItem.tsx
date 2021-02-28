@@ -11,7 +11,7 @@ interface Props {
   pagination: PaginationData;
 }
 
-const PostItem = ({ index, item, pagination }: Props) => (
+const PostItem: React.FC<Props> = ({ index, item, pagination }) => (
   <View>
     {/* Display page number if first post */}
     {index == 0 ? (

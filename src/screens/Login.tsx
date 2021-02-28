@@ -1,8 +1,31 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { Title, TextInput, Button, Snackbar } from 'react-native-paper';
 import { login } from '../api/api';
 import { useNavigation } from '@react-navigation/native';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingVertical: 32,
+    paddingHorizontal: 16,
+  },
+  pageTitle: {
+    marginBottom: 24,
+  },
+  username: {
+    paddingBottom: 4,
+  },
+  password: {
+    marginBottom: 24,
+  },
+  createAccount: {
+    paddingHorizontal: 16,
+    marginTop: 48,
+    textDecorationLine: 'underline',
+    textAlign: 'center',
+  },
+});
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -22,7 +45,7 @@ const Login = () => {
   const onDismiss = () => setVisible(false);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Title style={styles.pageTitle}>Login</Title>
 
       {/* username */}
@@ -52,31 +75,8 @@ const Login = () => {
       <Snackbar visible={visible} onDismiss={onDismiss}>
         Λανθασμένα στοιχεία σύνδεσης. Δοκιμάστε ξανά.
       </Snackbar>
-    </View>
+    </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingVertical: 32,
-    paddingHorizontal: 16,
-  },
-  pageTitle: {
-    marginBottom: 24,
-  },
-  username: {
-    paddingBottom: 4,
-  },
-  password: {
-    marginBottom: 24,
-  },
-  createAccount: {
-    paddingHorizontal: 16,
-    marginTop: 48,
-    textDecorationLine: 'underline',
-    textAlign: 'center',
-  },
-});
 
 export default Login;

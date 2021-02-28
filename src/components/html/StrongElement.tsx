@@ -6,7 +6,7 @@ interface Props {
   fontSize?: number;
 }
 
-const StrongElement = ({ text, fontSize = 18 }: Props) => (
+const StrongElement: React.FC<Props> = ({ text, fontSize = 18 }) => (
   <Text style={{ fontWeight: '700', fontSize }}>{text}</Text>
 );
 

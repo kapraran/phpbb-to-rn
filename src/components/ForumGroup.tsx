@@ -8,7 +8,7 @@ interface Props {
   item: GroupItem;
 }
 
-const ForumGroup = ({ item }: Props) => {
+const ForumGroup: React.FC<Props> = ({ item }) => {
   const { name, forums } = item;
   const navigation = useNavigation();
 
