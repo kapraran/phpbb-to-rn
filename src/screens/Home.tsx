@@ -8,10 +8,12 @@ import { FlatList } from 'react-native-gesture-handler';
 import AppHeader from '../components/AppHeader';
 import ForumGroup from '../components/ForumGroup';
 import SpinnerView from '../components/SpinnerView';
+import { withTheme } from 'react-native-paper';
 
 type HomeNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 type Props = {
+  theme: ReactNativePaper.Theme;
   navigation: HomeNavigationProp;
 };
 
@@ -23,7 +25,7 @@ const renderHeader = () => <AppHeader title="Panatha Forum" />;
 
 const renderEmpty = () => <SpinnerView />;
 
-const Home = ({ navigation }: Props) => {
+const Home = ({ navigation, theme }: Props) => {
   const [forums, setForums] = useState<GroupItem[]>([]);
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const Home = ({ navigation }: Props) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles(theme.dark).container}>
       <FlatList
         data={forums}
         renderItem={renderItem}
@@ -48,10 +50,12 @@ const Home = ({ navigation }: Props) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-  },
-});
+const styles = (dark: boolean) =>
+  StyleSheet.create({
+    container: {
+      flexGrow: 1,
+      backgroundColor: dark ? '#000' : '#fff',
+    },
+  });
 
-export default Home;
+export default withTheme(Home);

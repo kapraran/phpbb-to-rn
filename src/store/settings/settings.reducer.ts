@@ -8,7 +8,7 @@ type State = typeof INITIAL_STATE;
 
 const settingsReducer = (
   state: State = INITIAL_STATE,
-  action: { type: string },
+  action: { type: string; payload: any },
 ) => {
   switch (action.type) {
     case SET_DARK_THEME:

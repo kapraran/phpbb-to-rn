@@ -1,22 +1,23 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Caption, Colors } from 'react-native-paper';
+import { Caption, Colors, withTheme } from 'react-native-paper';
 
 interface Props {
+  theme: ReactNativePaper.Theme;
   username: string;
 }
 
-const styles = StyleSheet.create({
+const styles = (dark: boolean) => StyleSheet.create({
   quote: {
     borderWidth: 1,
-    borderColor: Colors.grey300,
+    borderColor: dark ? Colors.grey700 : Colors.grey300,
     borderRadius: 4,
-    backgroundColor: Colors.grey100,
+    backgroundColor: dark ? Colors.grey800 : Colors.grey100,
   },
   quoteHeader: {
     paddingHorizontal: 16,
     paddingVertical: 8,
-    borderBottomColor: Colors.grey200,
+    borderBottomColor: dark ? Colors.grey700 : Colors.grey300,
     borderBottomWidth: 1,
   },
   quoteContent: {
@@ -24,13 +25,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const QuoteElement: React.FC<Props> = ({ username, children }) => {
+const QuoteElement: React.FC<Props> = ({ username, children, theme }) => {
   return (
-    <View style={styles.quote}>
-      <Caption style={styles.quoteHeader}>{username}</Caption>
-      <View style={styles.quoteContent}>{children}</View>
+    <View style={styles(theme.dark).quote}>
+      <Caption style={styles(theme.dark).quoteHeader}>{username}</Caption>
+      <View style={styles(theme.dark).quoteContent}>{children}</View>
     </View>
   );
 };
 
-export default QuoteElement;
+export default React.memo(withTheme(QuoteElement)) ;

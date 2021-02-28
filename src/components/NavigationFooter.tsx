@@ -23,6 +23,9 @@ const NFButton = ({ iconName, onPress }: NFButtonProps) => {
       mode="outlined"
       color={Colors.green700}
       contentStyle={{ flex: 1 }}
+      style={{
+        borderWidth: 0,
+      }}
       onPress={onPress}>
       <Icon name={iconName} size={20} color={Colors.green700} />
     </Button>

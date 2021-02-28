@@ -1,22 +1,24 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Colors } from 'react-native-paper';
+import { Colors, withTheme } from 'react-native-paper';
 import AnchorElement from './AnchorElement';
 
 // @ts-ignore
 import RNUrlPreview from 'react-native-url-preview';
 
 interface Props {
+  theme: ReactNativePaper.Theme;
   uri: string;
 }
 
-const styles = StyleSheet.create({
+const styles = (dark: boolean) => StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
     alignItems: 'center',
   },
   title: {
     fontSize: 14,
+    color: dark ? Colors.white : Colors.black
   },
   description: {
     fontSize: 12,
@@ -36,7 +38,7 @@ const getVideoId = (uri: string) => {
   return matches.filter((x) => x !== undefined).pop();
 };
 
-const YoutubeElement = ({ uri }: Props) => {
+const YoutubeElement = ({ uri, theme }: Props) => {
   const id = getVideoId(uri);
 
   // check if valid id
@@ -48,10 +50,10 @@ const YoutubeElement = ({ uri }: Props) => {
       <AnchorElement text={url} href={url} />
       <RNUrlPreview
         text={url}
-        containerStyle={styles.container}
-        titleStyle={styles.title}
-        descriptionStyle={styles.description}
-        imageStyle={styles.image}
+        containerStyle={styles(theme.dark).container}
+        titleStyle={styles(theme.dark).title}
+        descriptionStyle={styles(theme.dark).description}
+        imageStyle={styles(theme.dark).image}
         imageProps={{
           resizeMode: 'cover',
         }}
@@ -60,4 +62,4 @@ const YoutubeElement = ({ uri }: Props) => {
   );
 };
 
-export default YoutubeElement;
+export default withTheme(YoutubeElement);

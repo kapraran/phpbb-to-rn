@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, FlatList, SafeAreaView, View } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button, withTheme } from 'react-native-paper';
 import AppHeader from '../components/AppHeader';
 import SpinnerView from '../components/SpinnerView';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -20,15 +20,18 @@ type ViewTopicNavigationProp = StackNavigationProp<
 type ViewTopicRouteProp = RouteProp<RootStackParamList, 'ViewTopic'>;
 
 type Props = {
+  theme: ReactNativePaper.Theme;
   navigation: ViewTopicNavigationProp;
   route: ViewTopicRouteProp;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-  },
-});
+const styles = (dark: boolean) =>
+  StyleSheet.create({
+    container: {
+      flexGrow: 1,
+      backgroundColor: dark ? '#000' : '#fff',
+    },
+  });
 
 const renderHeader = ({
   title,
@@ -39,7 +42,7 @@ const renderHeader = ({
 
 const renderEmpty = () => <SpinnerView />;
 
-const ViewTopic = ({ navigation, route }: Props) => {
+const ViewTopic = ({ navigation, route, theme }: Props) => {
   const [posts, setPosts] = useState<PostData[]>([]);
   const [unreadIndex, setUnreadIndex] = useState(0);
   const [pagination, setPagination] = React.useState<PaginationData>({
@@ -139,7 +142,7 @@ const ViewTopic = ({ navigation, route }: Props) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles(theme.dark).container}>
       <FlatList
         ref={flatListRef}
         data={posts}
@@ -151,7 +154,7 @@ const ViewTopic = ({ navigation, route }: Props) => {
           createKey(user.username, content, index)
         }
         stickyHeaderIndices={[0]}
-        contentContainerStyle={styles.container}
+        contentContainerStyle={styles(theme.dark).container}
         refreshing={false}
         onRefresh={onRefresh}
         onScrollToIndexFailed={onScrollToIndexFailed}
@@ -160,4 +163,4 @@ const ViewTopic = ({ navigation, route }: Props) => {
   );
 };
 
-export default ViewTopic;
+export default withTheme(ViewTopic);

@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Colors, Text } from 'react-native-paper';
+import { Colors, Text, withTheme } from 'react-native-paper';
 import { PostUserData } from '../api/scrapers/viewtopic';
 import { DateTime } from 'luxon';
 import PostAvatar from './PostAvatar';
 
 interface Props {
+  theme: ReactNativePaper.Theme;
   user: PostUserData;
   date: Date;
 }
@@ -13,25 +14,25 @@ interface Props {
 const timeAgo = (date: Date) =>
   DateTime.fromJSDate(date).setLocale('el').toRelativeCalendar();
 
-const PostCardHeader = ({ user, date }: Props) => (
-  <View style={styles.header}>
-    <View style={styles.userContainer}>
+const PostCardHeader = ({ user, date, theme }: Props) => (
+  <View style={styles(theme.dark).header}>
+    <View style={styles(theme.dark).userContainer}>
       <PostAvatar size={32} uri={user.avatarUrl} />
-      <Text style={styles.username}>{user.username}</Text>
+      <Text style={styles(theme.dark).username}>{user.username}</Text>
     </View>
 
-    <Text style={styles.date}>{timeAgo(date)}</Text>
+    <Text style={styles(theme.dark).date}>{timeAgo(date)}</Text>
   </View>
 );
 
-const styles = StyleSheet.create({
+const styles = (dark: boolean) => StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.grey100,
+    borderBottomColor: dark ? Colors.grey800: Colors.grey100,
   },
   userContainer: {
     flexDirection: 'row',
@@ -48,4 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default React.memo(PostCardHeader);
+export default React.memo(withTheme(PostCardHeader));

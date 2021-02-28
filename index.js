@@ -5,10 +5,10 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { AppRegistry } from 'react-native';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper';
 import {Provider as ReduxProvider} from 'react-redux'
 import { name as appName } from './app.json';
-import { NavigationContainer } from '@react-navigation/native';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import Stack from './src/navigator';
 
 import Home from './src/screens/Home';
@@ -17,22 +17,16 @@ import ViewForum from './src/screens/ViewForum';
 import ViewTopic from './src/screens/ViewTopic';
 import Reply from './src/screens/Reply';
 import { store } from './src/store/store';
+import {PanathaDarkTheme, PanathaLightTheme} from './src/themes'
 
-const theme = {
-  ...DefaultTheme,
-  dark: true,
-  roundness: 4,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: 'darkgreen',
-  },
-};
+const navTheme = DefaultTheme
+navTheme.colors.background = '#000'
 
 export default function Main() {
   return (
     <ReduxProvider store={store}>
-      <NavigationContainer>
-        <PaperProvider theme={theme}>
+      <NavigationContainer theme={navTheme}>
+        <PaperProvider theme={PanathaDarkTheme}>
           <Stack.Navigator headerMode="none">
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Login" component={Login} />

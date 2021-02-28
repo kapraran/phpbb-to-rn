@@ -5,19 +5,21 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import AppHeader from '../components/AppHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Button, withTheme } from 'react-native-paper';
 import { getReplyFields, postReply } from '../api/api';
 import { ReplyInputField } from '../api/scrapers/reply';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 type ReplyNavigationProp = StackNavigationProp<RootStackParamList, 'Reply'>;
 type ReplyRouteProp = RouteProp<RootStackParamList, 'Reply'>;
 
 type Props = {
+  theme: ReactNativePaper.Theme;
   navigation: ReplyNavigationProp;
   route: ReplyRouteProp;
 };
 
-const Reply = ({ navigation, route }: Props) => {
+const Reply = ({ navigation, route, theme }: Props) => {
   const [message, setMessage] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [fields, setFields] = useState<ReplyInputField[]>([]);
@@ -55,7 +57,9 @@ const Reply = ({ navigation, route }: Props) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{
+      backgroundColor: theme.dark ? Colors.black: Colors.white
+    }}>
       <AppHeader title="Απάντηση" subtitle={title} showBack={true} />
 
       <TextInput
@@ -85,4 +89,4 @@ const Reply = ({ navigation, route }: Props) => {
 
 const styles = StyleSheet.create({});
 
-export default Reply;
+export default withTheme(Reply);

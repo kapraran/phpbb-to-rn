@@ -7,7 +7,7 @@ import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigator';
 import { getViewForumTopics } from '../api/api';
 import { TopicLinkData } from '../api/scrapers/viewforum';
-import { List, Colors, Button } from 'react-native-paper';
+import { List, Colors, Button, withTheme } from 'react-native-paper';
 import { firstLetterUpper } from '../utils/utils';
 import TopicLinkModal from '../components/TopicLinkModal';
 import { PaginationData } from '../api/scrapers/pagination';
@@ -21,13 +21,16 @@ type ViewForumNavigationProp = StackNavigationProp<
 type ViewForumRouteProp = RouteProp<RootStackParamList, 'ViewForum'>;
 
 type Props = {
+  theme: ReactNativePaper.Theme;
   navigation: ViewForumNavigationProp;
   route: ViewForumRouteProp;
 };
 
-const renderSeparator = () => <View style={styles.separator} />;
+const renderSeparator = (dark: boolean) => (
+  <View style={styles(dark).separator} />
+);
 
-const ViewForum = ({ navigation, route }: Props) => {
+const ViewForum = ({ navigation, route, theme }: Props) => {
   const [topics, setTopics] = useState<TopicLinkData[]>([]);
   const [visible, setVisible] = useState(false);
   const [pressedLinkData, setPressedLinkData] = useState<TopicLinkData>();
@@ -121,7 +124,7 @@ const ViewForum = ({ navigation, route }: Props) => {
     ) : null;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles(theme.dark).container}>
       <FlatList
         ref={(ref) => (flatListRef = ref)}
         data={topics}
@@ -132,7 +135,7 @@ const ViewForum = ({ navigation, route }: Props) => {
         keyExtractor={({ title }) => title}
         stickyHeaderIndices={[0]}
         contentContainerStyle={{ flexGrow: 1 }}
-        ItemSeparatorComponent={renderSeparator}
+        ItemSeparatorComponent={() => renderSeparator(theme.dark)}
         refreshing={false}
         onRefresh={onRefresh}
       />
@@ -140,21 +143,23 @@ const ViewForum = ({ navigation, route }: Props) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-  },
-  footerNav: {
-    flexDirection: 'row',
-    marginBottom: 8,
-    marginHorizontal: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  separator: {
-    height: 1,
-    backgroundColor: '#ddd',
-  },
-});
+const styles = (dark: boolean) =>
+  StyleSheet.create({
+    container: {
+      flexGrow: 1,
+      backgroundColor: dark ? '#000' : '#fff',
+    },
+    footerNav: {
+      flexDirection: 'row',
+      marginBottom: 8,
+      marginHorizontal: 8,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    separator: {
+      height: 1,
+      backgroundColor: dark ? '#111' : '#ddd',
+    },
+  });
 
-export default ViewForum;
+export default withTheme(ViewForum);
