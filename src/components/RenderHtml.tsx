@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const RenderHtml = (props: Props) => {
+const RenderHtml: React.FC<Props> = (props) => {
   const [nodes, setNodes] = useState<ChildNode[]>([]);
   const maxWidth = Dimensions.get('window').width - 76;
 
@@ -154,4 +154,4 @@ const RenderHtml = (props: Props) => {
   );
 };
 
-export default RenderHtml;
+export default React.memo(RenderHtml);

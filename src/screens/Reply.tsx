@@ -39,12 +39,14 @@ const Reply = ({ navigation, route, theme }: Props) => {
   const onSubmit = () => {
     const submitFields = [...fields];
 
+    // add subject
     submitFields.push({
       name: 'subject',
       value: `Re: ${route.params.title}`,
       type: 'visible',
     });
 
+    // add message
     submitFields.push({
       name: 'message',
       value: message,
@@ -57,10 +59,7 @@ const Reply = ({ navigation, route, theme }: Props) => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        backgroundColor: theme.dark ? Colors.black : Colors.white,
-      }}>
+    <SafeAreaView style={styles(theme.dark).container}>
       <AppHeader title="Απάντηση" subtitle={title} showBack={true} />
 
       <TextInput
@@ -88,6 +87,11 @@ const Reply = ({ navigation, route, theme }: Props) => {
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = (dark: boolean) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: dark ? Colors.black : Colors.white,
+    },
+  });
 
 export default withTheme(Reply);

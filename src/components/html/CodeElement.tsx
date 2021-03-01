@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Paragraph, Colors, withTheme } from 'react-native-paper';
+import { actuatedNormalize } from '../../utils/scaling';
 
 interface Props {
   theme: ReactNativePaper.Theme;
@@ -14,6 +15,7 @@ const styles = (dark: boolean) =>
       backgroundColor: dark ? Colors.grey700 : Colors.green50,
       padding: 16,
       borderRadius: 4,
+      fontSize: actuatedNormalize(14),
     },
   });
 

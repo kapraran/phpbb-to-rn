@@ -98,7 +98,7 @@ const ViewTopic = ({ navigation, route, theme }: Props) => {
   // TODO move to a separate file
   const renderFooter = () =>
     posts.length > 0 ? (
-      <View>
+      <>
         <Button
           mode="contained"
           icon="plus"
@@ -116,7 +116,7 @@ const ViewTopic = ({ navigation, route, theme }: Props) => {
           pagination={pagination}
           onPageChange={onPageChange}
         />
-      </View>
+      </>
     ) : null;
 
   // TODO user post id or url params + index
