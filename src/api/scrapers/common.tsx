@@ -1,5 +1,6 @@
 export interface CommonData {
   isLogged: boolean;
+  username: string | null;
 }
 
 export const commonScraper = (document: Document): CommonData => {
@@ -9,5 +10,7 @@ export const commonScraper = (document: Document): CommonData => {
   )[1] as HTMLAnchorElement;
   const isLogged = loginLink.getAttribute('href') != './ucp.php?mode=login';
 
-  return { isLogged };
+  const username = null;
+
+  return { isLogged, username };
 };

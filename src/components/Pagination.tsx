@@ -38,7 +38,7 @@ const Pagination: React.FC<Props> = ({ current, max, onPageChange }) => {
           compact={true}
           mode="contained"
           onPress={onPressFirst}
-          style={{ marginRight: 4 }}>
+          style={{ marginRight: 8 }}>
           <Icon name="arrow-collapse-left" size={20} color={Colors.white} />
         </Button>
         <Button compact={true} mode="contained" onPress={onPressPrev}>
@@ -57,7 +57,7 @@ const Pagination: React.FC<Props> = ({ current, max, onPageChange }) => {
           compact={true}
           mode="contained"
           onPress={onPressNext}
-          style={{ marginRight: 4 }}>
+          style={{ marginRight: 8 }}>
           <Icon name="arrow-right" size={20} color={Colors.white} />
         </Button>
         <Button compact={true} mode="contained" onPress={onPressLast}>
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    margin: 8,
+    margin: 8
   },
   buttonGroup: {
     flexDirection: 'row',

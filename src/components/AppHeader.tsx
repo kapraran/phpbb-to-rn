@@ -16,10 +16,7 @@ const AppHeader: React.FC<Props> = ({
   showSettings = false,
 }) => {
   const navigation = useNavigation();
-
-  const goToSettings = () => {
-    navigation.navigate('Settings');
-  };
+  const goToSettings = () => navigation.navigate('Settings');
 
   return (
     <Appbar.Header>

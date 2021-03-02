@@ -1,7 +1,7 @@
 import React from 'react';
 import { PostData } from '../api/scrapers/viewtopic';
 import { View, StyleSheet } from 'react-native';
-import { Colors, withTheme } from 'react-native-paper';
+import { withTheme } from 'react-native-paper';
 import RenderHtml from './RenderHtml';
 import PostCardHeader from './PostCardHeader';
 
@@ -30,9 +30,7 @@ const PostCard = ({ post, theme }: Props) => {
   return (
     <View style={styles(theme.dark, post.hasUnreadAnchor).container}>
       <PostCardHeader user={user} date={date} />
-      <View>
-        <RenderHtml html={content} />
-      </View>
+      <RenderHtml html={content} />
     </View>
   );
 };

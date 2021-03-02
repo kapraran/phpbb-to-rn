@@ -12,6 +12,7 @@ import { PaginationData } from '../api/scrapers/pagination';
 import { TopicLinkParams } from '../api/scrapers/viewforum';
 import PostItem from '../components/PostItem';
 import NavigationFooter from '../components/NavigationFooter';
+import TopicFooter from '../components/TopicFooter';
 
 type ViewTopicNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -98,25 +99,17 @@ const ViewTopic = ({ navigation, route, theme }: Props) => {
   // TODO move to a separate file
   const renderFooter = () =>
     posts.length > 0 ? (
-      <>
-        <Button
-          mode="contained"
-          icon="plus"
-          style={{ margin: 8 }}
-          onPress={() => {
-            navigation.navigate('Reply', {
-              title: route.params.title,
-              params: route.params.params,
-            });
-          }}>
-          Απαντηση
-        </Button>
-        <NavigationFooter
-          listRef={flatListRef.current}
-          pagination={pagination}
-          onPageChange={onPageChange}
-        />
-      </>
+      <TopicFooter
+        onPressReply={() => {
+          navigation.navigate('Reply', {
+            title: route.params.title,
+            params: route.params.params,
+          });
+        }}
+        listRef={flatListRef}
+        pagination={pagination}
+        onPageChange={onPageChange}
+      />
     ) : null;
 
   // TODO user post id or url params + index
@@ -150,9 +143,7 @@ const ViewTopic = ({ navigation, route, theme }: Props) => {
         ListEmptyComponent={renderEmpty}
         ListHeaderComponent={() => renderHeader(route.params)}
         ListFooterComponent={renderFooter}
-        keyExtractor={({ user, content }, index) =>
-          createKey(user.username, content, index)
-        }
+        keyExtractor={(post) => post.id + ''}
         stickyHeaderIndices={[0]}
         contentContainerStyle={styles(theme.dark).container}
         refreshing={false}

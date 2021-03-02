@@ -1,4 +1,6 @@
 import hasClass from 'dom-helpers/hasClass';
+import { URL } from 'react-native-url-polyfill';
+import { prependBaseUrl } from '../../utils/utils';
 
 export interface PostUserData {
   username: string;
@@ -6,6 +8,7 @@ export interface PostUserData {
 }
 
 export interface PostData {
+  id: number;
   content: string;
   date: Date;
   signature: string | null;
@@ -30,6 +33,12 @@ export const viewTopicScraper = (document: Document) => {
       return posts;
     }
 
+    // get post id
+    const postUrl = row.querySelector<HTMLAnchorElement>('.postsubject a')!;
+    const params = new URL(prependBaseUrl(postUrl.getAttribute('href')!))
+      .searchParams;
+    const postId = parseInt(params.get('p')!);
+
     // post body
     const bodyNodes = row.querySelectorAll('.postbody');
     const content = bodyNodes[0].innerHTML;
@@ -43,6 +52,7 @@ export const viewTopicScraper = (document: Document) => {
     const avatarUrl = avatarEl ? avatarEl.src : null;
 
     posts.push({
+      id: postId,
       content,
       date: new Date(), // temporary
       signature,
