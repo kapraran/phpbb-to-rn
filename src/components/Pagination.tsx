@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    margin: 8
+    margin: 8,
   },
   buttonGroup: {
     flexDirection: 'row',
