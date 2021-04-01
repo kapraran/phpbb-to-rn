@@ -10,6 +10,10 @@ A comparison between between the original old and unresponsive website, and the 
 
 Some extra screenshots. The third one showcases the dark theme.
 
-<img src="./.github/readme/screen1.jpg" width="30%">
-<img src="./.github/readme/screen2.jpg" width="30%">
-<img src="./.github/readme/screen3-dark.jpg" width="30%">
+<div float="left">
+  <img src="./.github/readme/screen1.jpg" width="30%" style="display:inline-block">
+  
+  <img src="./.github/readme/screen2.jpg" width="30%" style="display:inline-block">
+  
+  <img src="./.github/readme/screen3-dark.jpg" width="30%" style="display:inline-block">
+</div>
