@@ -5,11 +5,12 @@ export interface CommonData {
 
 export const commonScraper = (document: Document): CommonData => {
   // check if user is authenticated
-  const loginLink = document.querySelectorAll(
+  const headerLinks: HTMLAnchorElement[]= Array.from(document.querySelectorAll(
     'td.navrow a',
-  )[1] as HTMLAnchorElement;
-  const isLogged = loginLink.getAttribute('href') != './ucp.php?mode=login';
+  ));
+  const loginLink = headerLinks.find(link => link.getAttribute('href')!.startsWith('./ucp.php?mode=login'))
 
+  const isLogged = !loginLink;
   const username = null;
 
   return { isLogged, username };
