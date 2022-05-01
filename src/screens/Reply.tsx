@@ -16,7 +16,6 @@ import { ReplyInputField } from '../api/scrapers/reply';
 import AppHeader from '../components/AppHeader';
 import { NativeSyntheticEvent } from 'react-native';
 import { TextInputSelectionChangeEventData } from 'react-native';
-import { Dimensions } from 'react-native';
 
 type ReplyNavigationProp = StackNavigationProp<RootStackParamList, 'Reply'>;
 type ReplyRouteProp = RouteProp<RootStackParamList, 'Reply'>;

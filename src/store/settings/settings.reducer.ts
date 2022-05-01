@@ -16,6 +16,7 @@ const settingsReducer = (
         ...state,
         darkMode: action.payload,
       };
+
     default:
       return state;
   }

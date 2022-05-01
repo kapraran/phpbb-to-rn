@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, SafeAreaView, View } from 'react-native';
 import { Paragraph, Switch, TouchableRipple } from 'react-native-paper';
 import { Dispatch } from 'redux';
