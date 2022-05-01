@@ -1,6 +1,5 @@
-import { URL } from 'react-native-url-polyfill';
 import he from 'he';
-import { prependBaseUrl } from '../../utils/utils';
+import { parseRelativeURL } from '../../utils/utils';
 
 export interface GroupItem {
   name: string;
@@ -20,9 +19,7 @@ export interface ForumLinkParams {
 }
 
 const getParams = function (link: HTMLAnchorElement): ForumLinkParams {
-  const params = new URL(prependBaseUrl(link.getAttribute('href')!))
-    .searchParams;
-
+  const params = parseRelativeURL(link.getAttribute('href')!).searchParams;
   return { f: parseInt(params.get('f')!) };
 };
 

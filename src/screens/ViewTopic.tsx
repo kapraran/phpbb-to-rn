@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, FlatList, SafeAreaView, View } from 'react-native';
-import { Button, withTheme } from 'react-native-paper';
+import { withTheme } from 'react-native-paper';
 import AppHeader from '../components/AppHeader';
 import SpinnerView from '../components/SpinnerView';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -11,7 +11,6 @@ import { getViewTopicPosts } from '../api/api';
 import { PaginationData } from '../api/scrapers/pagination';
 import { TopicLinkParams } from '../api/scrapers/viewforum';
 import PostItem from '../components/PostItem';
-import NavigationFooter from '../components/NavigationFooter';
 import TopicFooter from '../components/TopicFooter';
 
 type ViewTopicNavigationProp = StackNavigationProp<
@@ -111,14 +110,6 @@ const ViewTopic = ({ navigation, route, theme }: Props) => {
         onPageChange={onPageChange}
       />
     ) : null;
-
-  // TODO user post id or url params + index
-  const createKey = (username: string, content: string, index: number) => {
-    return `${username}:${index}:${content.substr(
-      0,
-      Math.min(8, content.length),
-    )}`;
-  };
 
   const onScrollToIndexFailed = ({
     index,

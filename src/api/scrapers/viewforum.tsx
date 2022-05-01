@@ -1,5 +1,4 @@
-import { dbg, prependBaseUrl } from '../../utils/utils';
-import { URL } from 'react-native-url-polyfill';
+import { parseRelativeURL } from '../../utils/utils';
 
 export interface TopicLinkParams {
   f: number;
@@ -43,7 +42,7 @@ const getRowAuthor = (row: HTMLTableRowElement): string => {
 const getRowLinkQuery = (row: HTMLTableRowElement) => {
   const td = row.children[1];
   const a = td.querySelector<HTMLAnchorElement>('a')!;
-  const params = new URL(prependBaseUrl(a.getAttribute('href')!)).searchParams;
+  const params = parseRelativeURL(a.getAttribute('href')!).searchParams;
 
   const f = parseInt(params.get('f')!);
   const t = parseInt(params.get('t')!);
