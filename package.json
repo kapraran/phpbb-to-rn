@@ -23,7 +23,7 @@
     "dom-helpers": "5.2.0",
     "he": "1.2.0",
     "jsdom-jscore-rn": "0.1.8",
-    "luxon": "1.25.0",
+    "luxon": "1.28.1",
     "react": "16.13.1",
     "react-native": "0.63.2",
     "react-native-gesture-handler": "1.8.0",
